@@ -4,15 +4,27 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float speed = 5.0f;
+    private float speed;
+    public float defaultSpeed = 15.0f;
     public ParticleSystem particleSys; // Reference to the particle system
     private bool isParticleSystemActive = false;
     public PlayerFuelSystem fuelSystem;
+    public Stamina stamina; //Reference to the stamina
+    private bool running = false;
+    private float runSpeed = 18.0f;
+    public float runStaminaWeight; 
+    public float runStaminaCost; //base cost for stamina speed
+    private float staminaWorkingValue;
 
+    void Start()
+    {
+        speed = defaultSpeed;
+        staminaWorkingValue = stamina.CheckStamina();
+    }
 
     void Update()
     {
-
+        staminaWorkingValue = stamina.CheckStamina();
         // Get the mouse position in screen space.
         Vector3 mousePositionScreen = Input.mousePosition;
 
@@ -62,7 +74,35 @@ public class Player : MonoBehaviour
             }
         }
 
-    
+        //ALL STAMINA BASED THINGS SHOULD BE DONE UNDER HERE ---- SO WE ONLY NEED TO STAMINA CHECK ONCE PER UPDATE
+        if( staminaWorkingValue>= 0.5f)
+        {
+            if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
+            {
+                running = true;
+                speed = runSpeed;
+            }
+        }
+        else
+        {
+            running = false;
+            speed = defaultSpeed;
+        }
+        if (Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.RightControl))
+        {
+            Debug.Log("lifted");
+            running = false;
+            speed = defaultSpeed;
+        }
+
+    }
+
+    void FixedUpdate()
+    {
+        if(running)
+        {
+            Stamina.UseStamina(runStaminaCost * runStaminaWeight);
+        }
     }
 
 }
