@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     public float runStaminaWeight; 
     public float runStaminaCost; //base cost for stamina speed
     private float staminaWorkingValue;
+    private Ray pointerRay; //raycast for mouse position
 
     void Start()
     {
@@ -32,16 +33,19 @@ public class Player : MonoBehaviour
         Vector3 mousePositionWorld = Camera.main.ScreenToWorldPoint(new Vector3(mousePositionScreen.x, mousePositionScreen.y, Camera.main.transform.position.y));
 
         // Calculate the direction from the player to the mouse.
-        Vector3 lookDirection = mousePositionWorld - transform.position;
+        mousePosition();
+        
+        // Vector3 lookDirection = mousePositionVector() - transform.position;     Delete Later                                                     
+        // Vector3 lookDirection = mousePositionWorld - transform.position;        Delete Later                                                 
 
-        // Ensure the player doesn't tilt up or down (keeping them upright).
-        lookDirection.y = 0;
+        // Ensure the player doesn't tilt up or down (keeping them upright).       Delete Later                                                     
+        // lookDirection.y = 0;                                                    Delete Later     
 
-        // Rotate the player to look at the mouse.
-        if (lookDirection != Vector3.zero)
-        {
-            transform.forward = lookDirection.normalized;
-        }
+        // Rotate the player to look at the mouse.                                 Delete Later                                                     
+        // if (lookDirection != Vector3.zero)                                      Delete Later                                                 
+        // {                                                                       Delete Later                 
+        //     transform.forward = lookDirection.normalized;                       Delete Later                                                                 
+        // }                                                                       Delete Later                 
 
         // Player movement code (e.g., using WASD or arrow keys).
         float horizontalInput = Input.GetAxis("Horizontal");
@@ -104,5 +108,22 @@ public class Player : MonoBehaviour
             Stamina.UseStamina(runStaminaCost * runStaminaWeight);
         }
     }
+
+    // Get the mouse position values
+    void mousePosition()
+    {
+        pointerRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if(Physics.Raycast(ray: pointerRay, hitInfo: out RaycastHit hit) && hit.collider)           //Add a layer mask
+        {
+            Vector3 lookDirection = hit.point - transform.position;
+            lookDirection.Normalize();
+
+            float rotationZ = Mathf.Atan2(lookDirection.z, lookDirection.x) * Mathf.Rad2Deg - 90;   //remove -90 when pivot is added
+
+            this.transform.rotation = Quaternion.Euler(0, -rotationZ, 0);                           //Change to a pivot instead of player
+        }
+    }
+
 
 }
