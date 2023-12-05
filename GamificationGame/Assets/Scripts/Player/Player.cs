@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     public float runStaminaWeight; 
     public float runStaminaCost; //base cost for stamina speed
     private float staminaWorkingValue;
+    private Ray pointerRay; //raycast for mouse position
 
     //dodging vaules
     private bool isDodging = false;
@@ -61,16 +62,13 @@ public class Player : MonoBehaviour
 
         staminaWorkingValue = stamina.CheckStamina();
         // Calculate the direction from the player to the mouse.
-        Vector3 lookDirection = mousePositionWorld - transform.position;
-
-        // Ensure the player doesn't tilt up or down (keeping them upright).
-        lookDirection.y = 0;
-
-        // Rotate the player to look at the mouse.
-        if (lookDirection != Vector3.zero)
-        {
-            transform.forward = lookDirection.normalized;
-        }
+                                             
+        Vector3 lookDirection = mousePositionWorld - transform.position;                                                                                                                
+        lookDirection.y = 0;                                                                                                                                              
+        if (lookDirection != Vector3.zero)                                                                                       
+        {                                                                                       
+            transform.forward = lookDirection.normalized;                                                                                        
+        }                                                                                       
 
         // Player movement code (e.g., using WASD or arrow keys).
         float horizontalInput = Input.GetAxis("Horizontal");
@@ -139,6 +137,7 @@ public class Player : MonoBehaviour
             Stamina.UseStamina(runStaminaCost * runStaminaWeight);
         }
     }
+
 
 
     IEnumerator Dodge()
