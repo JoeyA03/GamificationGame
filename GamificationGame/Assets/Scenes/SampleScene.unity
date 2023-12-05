@@ -386,6 +386,12 @@ MonoBehaviour:
   stamina: {fileID: 381544431}
   runStaminaWeight: 1
   runStaminaCost: 0.5
+  dodgeSpeed: 30
+  dodgeDuration: 0.5
+  dodgeCooldown: 2
+  dodgeWeightEffective: 1
+  dodgeStaminaCost: 20
+  playerWeight: 1
 --- !u!114 &381544429
 MonoBehaviour:
   m_ObjectHideFlags: 0
