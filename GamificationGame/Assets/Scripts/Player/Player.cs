@@ -28,6 +28,14 @@ public class Player : MonoBehaviour
     float lastDodgeTime;
     Vector3 movement;
 
+    //dodging vaules
+    private bool isMeleeing = false;
+    public float meleeSpeed = 30.0f;
+    public float meleeDuration = 0.1f;
+    public float meleeWeightEffective = 2f;
+    public float meleeStaminaCost = 5f;
+
+
     //player variables for stamina calcs
     public float playerWeight = 1f;
 
@@ -40,35 +48,39 @@ public class Player : MonoBehaviour
         staminaWorkingValue = stamina.CheckStamina();
     }
 
-    void Update()
+    //
+    void Update()   
     {
-        // Get the mouse position in screen space.
-        Vector3 mousePositionScreen = Input.mousePosition;
+        MouseMovement();
+        // // Get the mouse position in screen space.
+        // Vector3 mousePositionScreen = Input.mousePosition;
 
-        // Convert the mouse position from screen space to world space.
-        Vector3 mousePositionWorld = Camera.main.ScreenToWorldPoint(new Vector3(mousePositionScreen.x, mousePositionScreen.y, Camera.main.transform.position.y));
+        // // Convert the mouse position from screen space to world space.
+        // Vector3 mousePositionWorld = Camera.main.ScreenPointToRay(new Vector3(mousePositionScreen.x, mousePositionScreen.y, Camera.main.transform.position.y));
 
-        // Check if the mouse is on the left or right side of the player
-        if (mousePositionWorld.x < transform.position.x)
-        {
-            // Flip the sprite to face left
-            GetComponent<SpriteRenderer>().flipX = true;
-        }
-        else
-        {
-            // Flip the sprite to face right
-            GetComponent<SpriteRenderer>().flipX = false;
-        }
+        
+
+        // // Check if the mouse is on the left or right side of the player
+        // if (mousePositionWorld.x < transform.position.x)
+        // {
+        //     // Flip the sprite to face left
+        //     GetComponent<SpriteRenderer>().flipX = true;
+        // }
+        // else
+        // {
+        //     // Flip the sprite to face right
+        //     GetComponent<SpriteRenderer>().flipX = false;
+        // }
 
         staminaWorkingValue = stamina.CheckStamina();
         // Calculate the direction from the player to the mouse.
-                                             
-        Vector3 lookDirection = mousePositionWorld - transform.position;                                                                                                                
-        lookDirection.y = 0;                                                                                                                                              
-        if (lookDirection != Vector3.zero)                                                                                       
-        {                                                                                       
-            transform.forward = lookDirection.normalized;                                                                                        
-        }                                                                                       
+
+        // Vector3 lookDirection = mousePositionWorld - transform.position;                                                                                                                
+        // lookDirection.y = 0;                                                                                                                                              
+        // if (lookDirection != Vector3.zero)                                                                                       
+        // {                                                                                       
+        //     transform.forward = lookDirection.normalized;                                                                                        
+        // }                                                                                       
 
         // Player movement code (e.g., using WASD or arrow keys).
         float horizontalInput = Input.GetAxis("Horizontal");
@@ -86,6 +98,13 @@ public class Player : MonoBehaviour
             lastDodgeTime = Time.time;
             Stamina.UseStamina(dodgeStaminaCost * (dodgeWeightEffective*playerWeight));
             StartCoroutine(Dodge());
+        }
+
+        // rough Melee attack 
+        if (Input.GetMouseButton(1) && !isMeleeing)
+        {
+            Stamina.UseStamina(meleeStaminaCost * (meleeWeightEffective*playerWeight));
+            StartCoroutine(OnMelee());
         }
         // FLAME THROWA
         if (Input.GetMouseButton(0) && fuelSystem.IsFuelAvailable() && isDodging == false) // Change to Input.GetMouseButton(1) for right mouse button
@@ -138,8 +157,38 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void MouseMovement()
+    {
+        pointerRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        
+        if(Physics.Raycast(ray: pointerRay, hitInfo: out RaycastHit hit) && hit.collider)
+        {
+            Vector3 difference = hit.point - transform.position;
+            difference.Normalize();
 
+            float rotationZ = Mathf.Atan2(difference.z, difference.x) * Mathf.Rad2Deg - 90;             // Rremove -90 once a pivot is set to the chracter controller           
 
+            this.gameObject.transform.GetChild(2).rotation = Quaternion.Euler(0, -rotationZ, 0);
+
+            if (difference.x < transform.position.x)
+            {
+                // Flip the sprite to face left
+                // gameObject.GetChild(0).GetComponent<SpriteRenderer>().flipX = true;
+                GetComponentInChildren<SpriteRenderer>().flipX = true;
+            }
+            else
+            {
+                // Flip the sprite to face right
+                // gameObject.GetChild(0).GetComponent<SpriteRenderer>().flipX = false;
+                GetComponentInChildren<SpriteRenderer>().flipX = false;
+            }
+
+            // int rotation = ((((int)rotationZ / 45) + 1) * 45) - (45 / 2);                            // If we want to d snapped directions
+
+        }
+    }
+
+    //TODO disable character movement when dodging 
     IEnumerator Dodge()
     {
         isDodging = true;
@@ -158,6 +207,40 @@ public class Player : MonoBehaviour
         // Reset variables after the dodge
         speed = defaultSpeed;
         isDodging = false;
+    }
+
+    /*
+    TODO 
+    once animations are on, change logic to animation flags rather than corouutines
+    Set up a list of already hit targets from melee attack to avoid multihit, or set up hitstun
+    possibly not a while loop inside a courotine? 
+    */
+
+    //rough copy 
+    IEnumerator OnMelee()
+    {
+        isMeleeing = true;
+        // foreach(RaycastHit hit in Physics.CapsuleCastAll(this.gameObject.transform.GetChild(2), 2, transform.right))
+        // {
+        //     Debug.Log("Added " + hit.collider.name);
+        // }
+
+        float elapsed = 0.0f;
+        while (elapsed < dodgeDuration)
+        {
+            elapsed += Time.deltaTime;
+            Debug.Log("Attacking");
+            foreach(RaycastHit hit in Physics.SphereCastAll(this.gameObject.transform.GetChild(2).GetChild(0).position, 1, transform.right))
+            {
+                Debug.Log("Added " + hit.collider.name);
+            }
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(elapsed);
+        isMeleeing = false;
+
+
     }
 
 
