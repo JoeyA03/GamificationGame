@@ -35,6 +35,8 @@ public class Player : MonoBehaviour
     public float meleeWeightEffective = 2f;
     public float meleeStaminaCost = 5f;
 
+    public bool inInventory = false;                // Probably change this into a gamemanager.
+    public GameObject inventoryUI;
 
     //player variables for stamina calcs
     public float playerWeight = 1f;
@@ -51,6 +53,18 @@ public class Player : MonoBehaviour
     //
     void Update()   
     {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            inInventory = !inInventory;
+        }
+        inventoryUI.SetActive(inInventory);
+
+        if(inInventory)
+        {
+            
+            return;
+        }
+
         MouseMovement();
         // // Get the mouse position in screen space.
         // Vector3 mousePositionScreen = Input.mousePosition;
