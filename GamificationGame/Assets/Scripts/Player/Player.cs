@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     private float speed;
     public float defaultSpeed = 15.0f;
+    public Rigidbody rb;
     public ParticleSystem particleSys; // Reference to the particle system
     private bool isParticleSystemActive = false;
     public PlayerFuelSystem fuelSystem;
@@ -16,6 +17,8 @@ public class Player : MonoBehaviour
     public float runStaminaCost; //base cost for stamina speed
     private float staminaWorkingValue;
     private Ray pointerRay; //raycast for mouse position
+    public LayerMask layerMask;  //layermask for mouse-over collision
+    public LayerMask hitLayerMask;  //layermask for mouse-over collision
 
     //dodging vaules
     private bool isDodging = false;
@@ -48,6 +51,7 @@ public class Player : MonoBehaviour
     {
         speed = defaultSpeed;
         staminaWorkingValue = stamina.CheckStamina();
+        rb = GetComponent<Rigidbody>();
     }
 
     //
@@ -97,14 +101,13 @@ public class Player : MonoBehaviour
         // }                                                                                       
 
         // Player movement code (e.g., using WASD or arrow keys).
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
+       
 
         // Calculate the movement vector based on input.
-        movement = new Vector3(horizontalInput, 0.0f, verticalInput).normalized;
+        // 
 
         // Translate the player based on the movement vector.
-        transform.Translate(movement * speed * Time.deltaTime, Space.World);
+        // transform.Translate(movement * speed * Time.deltaTime, Space.World);
 
         if (Input.GetKeyDown(KeyCode.Space) && !isDodging && Time.time - lastDodgeTime >= dodgeCooldown)
         {
@@ -123,20 +126,27 @@ public class Player : MonoBehaviour
         // FLAME THROWA
         if (Input.GetMouseButton(0) && fuelSystem.IsFuelAvailable() && isDodging == false) // Change to Input.GetMouseButton(1) for right mouse button
         {
+            fuelSystem.StartParticleSystem();
+            
             // Turn on the particle system if it's not already active
             if (!isParticleSystemActive)
             {
                 particleSys.Play();
-                isParticleSystemActive = true;
             }
+            isParticleSystemActive = true;
+
+            
         }
         else
         {
+            fuelSystem.EndParticleSystem();
+            
+            isParticleSystemActive = false;
+            // isParticleSystemActive = true;
             // Turn off the particle system if the mouse button is released
-            if (isParticleSystemActive)
+            if (!isParticleSystemActive)
             {
                 particleSys.Stop();
-                isParticleSystemActive = false;
             }
         }
 
@@ -169,13 +179,21 @@ public class Player : MonoBehaviour
         {
             Stamina.UseStamina(runStaminaCost * runStaminaWeight);
         }
+
+
+        float horizontalInput = Input.GetAxisRaw("Horizontal");
+        float verticalInput = Input.GetAxisRaw("Vertical");
+
+        movement = new Vector3(horizontalInput, 0.0f, verticalInput).normalized;
+        
+        rb.velocity = movement * speed;
     }
 
     private void MouseMovement()
     {
         pointerRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         
-        if(Physics.Raycast(ray: pointerRay, hitInfo: out RaycastHit hit) && hit.collider)
+        if(Physics.Raycast(ray: pointerRay, hitInfo: out RaycastHit hit, layerMask) && hit.collider)
         {
             Vector3 difference = hit.point - transform.position;
             difference.Normalize();
@@ -184,7 +202,9 @@ public class Player : MonoBehaviour
 
             this.gameObject.transform.GetChild(2).rotation = Quaternion.Euler(0, -rotationZ, 0);
 
-            if (difference.x < transform.position.x)
+            // Debug.Log(hit.point.x > transform.position.x);
+
+            if (hit.point.x > transform.position.x)
             {
                 // Flip the sprite to face left
                 // gameObject.GetChild(0).GetComponent<SpriteRenderer>().flipX = true;
@@ -195,6 +215,18 @@ public class Player : MonoBehaviour
                 // Flip the sprite to face right
                 // gameObject.GetChild(0).GetComponent<SpriteRenderer>().flipX = false;
                 GetComponentInChildren<SpriteRenderer>().flipX = false;
+            }
+            
+
+            //
+            if(Input.GetMouseButton(0))                                                            
+            {
+                //Debug Sphere to show size
+                GameObject point1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                point1.transform.position = hit.point;
+
+                point1.AddComponent<DebugDestory>();
+                Destroy(point1.GetComponent<SphereCollider>());
             }
 
             // int rotation = ((((int)rotationZ / 45) + 1) * 45) - (45 / 2);                            // If we want to d snapped directions
@@ -239,21 +271,36 @@ public class Player : MonoBehaviour
         //     Debug.Log("Added " + hit.collider.name);
         // }
 
+        //Debug Sphere to show hit location
+        GameObject point1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        point1.transform.position = this.gameObject.transform.GetChild(2).GetChild(0).position;
+
+        point1.AddComponent<DebugDestory>();
+        Destroy(point1.GetComponent<SphereCollider>());
+
         float elapsed = 0.0f;
         while (elapsed < dodgeDuration)
         {
             elapsed += Time.deltaTime;
             Debug.Log("Attacking");
-            foreach(RaycastHit hit in Physics.SphereCastAll(this.gameObject.transform.GetChild(2).GetChild(0).position, 1, transform.right))
+
+            //TODO CHANGE THIS  TO A RAYCAST IN THE FUTURE
+            foreach(RaycastHit hit in Physics.SphereCastAll(this.gameObject.transform.GetChild(2).GetChild(0).position, 1, transform.up, 0f, hitLayerMask))
             {
                 Debug.Log("Added " + hit.collider.name);
+                if(hit.rigidbody != null)
+                {
+                    hit.rigidbody.AddForce(-(hit.point - this.transform.position).normalized * 1, ForceMode.Impulse);
+                    Debug.Log(hit.point);
+                    Debug.Log("Hit Dumpster");
+                }
+
             }
             yield return null;
         }
 
         yield return new WaitForSeconds(elapsed);
         isMeleeing = false;
-
 
     }
 

@@ -25,7 +25,7 @@ public class Stamina : MonoBehaviour
     void Update()
     {
         // Start recharging fuel after the delay
-         timeSinceLastUse += Time.deltaTime;
+        timeSinceLastUse += Time.deltaTime;
 
         if (timeSinceLastUse >= staminaRechargeDelay)
         {

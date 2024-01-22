@@ -26,15 +26,15 @@ public class PlayerFuelSystem : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButton(0)) // Change to Input.GetMouseButton(1) for right mouse button
-        {
-            isUsingParticleSystem = true;
-            timeSinceLastUse = 0.0f;
-        }
-        else
-        {
-            isUsingParticleSystem = false;
-        }
+        // if (Input.GetMouseButton(0)) // Change to Input.GetMouseButton(1) for right mouse button
+        // {
+        //     isUsingParticleSystem = true;
+        //     timeSinceLastUse = 0.0f;
+        // }
+        // else
+        // {
+        //     isUsingParticleSystem = false;
+        // }
 
         if (isUsingParticleSystem)
         {
@@ -79,6 +79,11 @@ public class PlayerFuelSystem : MonoBehaviour
     {
         isUsingParticleSystem = true;
         timeSinceLastUse = 0.0f;
+    }
+    public void EndParticleSystem()
+    {
+        isUsingParticleSystem = false;
+        // timeSinceLastUse = 0.0f;
     }
 
     public bool IsFuelAvailable()

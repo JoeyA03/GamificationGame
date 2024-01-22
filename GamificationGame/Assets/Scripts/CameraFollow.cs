@@ -8,13 +8,13 @@ public class CameraFollow : MonoBehaviour
     public float followSpeed = 5.0f;
     public float delayInSeconds = 1.0f;
 
-    private Vector3 offset;
+    public Vector3 offset;
 
     private bool isFollowing = false;
 
     void Start()
     {
-        offset = transform.position - player.position;
+        offset += transform.position - player.position;
     }
 
     void Update()

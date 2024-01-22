@@ -28,7 +28,7 @@ public class GridUI : MonoBehaviour
 
     void Update()
     {
-        
+
     }
 
     void createGrid(int gridWidth, int gridHeight)
