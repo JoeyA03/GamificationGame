@@ -59,9 +59,9 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            inInventory = !inInventory;
+            InventorySet();
         }
-        inventoryUI.SetActive(inInventory);
+        
 
         if(inInventory)
         {
@@ -124,7 +124,7 @@ public class Player : MonoBehaviour
             StartCoroutine(OnMelee());
         }
         // FLAME THROWA
-        if (Input.GetMouseButton(0) && fuelSystem.IsFuelAvailable() && isDodging == false) // Change to Input.GetMouseButton(1) for right mouse button
+        /*if (Input.GetMouseButton(0) && fuelSystem.IsFuelAvailable() && isDodging == false) // Change to Input.GetMouseButton(1) for right mouse button
         {
             fuelSystem.StartParticleSystem();
             
@@ -148,7 +148,7 @@ public class Player : MonoBehaviour
             {
                 particleSys.Stop();
             }
-        }
+        }*/
 
         //ALL STAMINA BASED THINGS SHOULD BE DONE UNDER HERE ---- SO WE ONLY NEED TO STAMINA CHECK ONCE PER UPDATE
         if( staminaWorkingValue>= 0.5f)
@@ -219,7 +219,7 @@ public class Player : MonoBehaviour
             
 
             //
-            if(Input.GetMouseButton(0))                                                            
+            /*if(Input.GetMouseButton(0))                                                            
             {
                 //Debug Sphere to show size
                 GameObject point1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -227,13 +227,20 @@ public class Player : MonoBehaviour
 
                 point1.AddComponent<DebugDestory>();
                 Destroy(point1.GetComponent<SphereCollider>());
-            }
+            }*/
 
             // int rotation = ((((int)rotationZ / 45) + 1) * 45) - (45 / 2);                            // If we want to d snapped directions
 
         }
     }
 
+
+    public void InventorySet()
+    {
+        inInventory = !inInventory;
+        inventoryUI.SetActive(inInventory);
+        inventoryUI.gameObject.transform.Find("Border").GetComponent<RectTransform>().anchoredPosition = new Vector2(-0, 0);
+    }
     //TODO disable character movement when dodging 
     IEnumerator Dodge()
     {
