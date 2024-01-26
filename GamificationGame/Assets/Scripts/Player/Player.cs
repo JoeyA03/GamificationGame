@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    #region variables
     private float speed;
     public float defaultSpeed = 15.0f;
     public Rigidbody rb;
@@ -44,19 +46,32 @@ public class Player : MonoBehaviour
     //player variables for stamina calcs
     public float playerWeight = 1f;
 
-    
+    public float playerHealth = 100;
+    public float maxHP = 100;
+    public GameObject healthSlider;
+    private Slider sliderHealth;
+    public GameObject canOne;
+    public GameObject canTwo;
+    public GameObject canThree;
+    public int numOfCans = 1;
+    public int maxCans = 3;
 
+    public GameObject raycaster;
+
+    #endregion
 
     void Start()
     {
         speed = defaultSpeed;
         staminaWorkingValue = stamina.CheckStamina();
         rb = GetComponent<Rigidbody>();
+        sliderHealth = healthSlider.GetComponentInChildren<Slider>();
+        sliderHealth.value = playerHealth;
+        UpdateCanister(0);
     }
-
-    //
     void Update()   
     {
+        raycaster.transform.position = new Vector3(gameObject.transform.position.x,gameObject.transform.position.y + 500, gameObject.transform.position.z);
         if (Input.GetKeyDown(KeyCode.E))
         {
             InventorySet();
@@ -172,7 +187,6 @@ public class Player : MonoBehaviour
         }
 
     }
-
     void FixedUpdate()
     {
         if(running)
@@ -188,7 +202,6 @@ public class Player : MonoBehaviour
         
         rb.velocity = movement * speed;
     }
-
     private void MouseMovement()
     {
         pointerRay = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -233,8 +246,6 @@ public class Player : MonoBehaviour
 
         }
     }
-
-
     public void InventorySet()
     {
         inInventory = !inInventory;
@@ -261,16 +272,14 @@ public class Player : MonoBehaviour
         speed = defaultSpeed;
         isDodging = false;
     }
-
     /*
     TODO 
     once animations are on, change logic to animation flags rather than corouutines
     Set up a list of already hit targets from melee attack to avoid multihit, or set up hitstun
     possibly not a while loop inside a courotine? 
     */
-
     //rough copy 
-    IEnumerator OnMelee()
+    IEnumerator OnMelee() 
     {
         isMeleeing = true;
         // foreach(RaycastHit hit in Physics.CapsuleCastAll(this.gameObject.transform.GetChild(2), 2, transform.right))
@@ -310,6 +319,68 @@ public class Player : MonoBehaviour
         isMeleeing = false;
 
     }
+    public void UpdateHealth(int change) // anytime health needs updated just use a pos number for adding and neg number for subtracting (ie hit)
+    {
+        if((playerHealth + change) >= maxHP)
+        {
+            playerHealth = maxHP;
+            sliderHealth.value = playerHealth;
+        }
+        else
+        {
+            playerHealth += change;
+            sliderHealth.value = playerHealth;
+        }
+    }
+    public void UpdateCanister(int change)
+    {   if((numOfCans + change) >= maxCans)
+        {
+            numOfCans = maxCans;
+        }
+        else
+        {
+            numOfCans += change;
+        }
+        Color color;
+        switch (numOfCans)
+        {
+            case 0:
+                ColorUtility.TryParseHtmlString("#000000", out color);
+                canOne.GetComponent<Image>().color = color;
+                ColorUtility.TryParseHtmlString("#000000", out color);
+                canTwo.GetComponent<Image>().color = color;
+                ColorUtility.TryParseHtmlString("#000000", out color);
+                canThree.GetComponent<Image>().color = color;
+                break;
+            case 1:
+                ColorUtility.TryParseHtmlString("#FFFFFF", out color);
+                canOne.GetComponent<Image>().color = color;
+                ColorUtility.TryParseHtmlString("#000000", out color);
+                canTwo.GetComponent<Image>().color = color;
+                ColorUtility.TryParseHtmlString("#000000", out color);
+                canThree.GetComponent<Image>().color = color;
+                break;
+            case 2:
+                ColorUtility.TryParseHtmlString("#FFFFFF", out color);
+                canOne.GetComponent<Image>().color = color;
+                ColorUtility.TryParseHtmlString("#FFFFFF", out color);
+                canTwo.GetComponent<Image>().color = color;
+                ColorUtility.TryParseHtmlString("#000000", out color);
+                canThree.GetComponent<Image>().color = color;
+                break;
+            case 3:
+                ColorUtility.TryParseHtmlString("#FFFFFF", out color);
+                canOne.GetComponent<Image>().color = color;
+                ColorUtility.TryParseHtmlString("#FFFFFF", out color);
+                canTwo.GetComponent<Image>().color = color;
+                ColorUtility.TryParseHtmlString("#FFFFFF", out color);
+                canThree.GetComponent<Image>().color = color;
+                break;
+
+        }
+
+    }
+
 
 
 
