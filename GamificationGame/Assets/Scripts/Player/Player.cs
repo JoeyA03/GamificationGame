@@ -40,9 +40,13 @@ public class Player : MonoBehaviour
 
     public bool inInventory = false;                // Probably change this into a gamemanager.
     public GameObject inventoryUI;
+    public GameObject inventorySystem;
 
     //player variables for stamina calcs
     public float playerWeight = 1f;
+
+    //Player Animation Values
+    public Animator playerAnimation;
 
     
 
@@ -65,7 +69,6 @@ public class Player : MonoBehaviour
 
         if(inInventory)
         {
-            
             return;
         }
 
@@ -124,7 +127,7 @@ public class Player : MonoBehaviour
             StartCoroutine(OnMelee());
         }
         // FLAME THROWA
-        /*if (Input.GetMouseButton(0) && fuelSystem.IsFuelAvailable() && isDodging == false) // Change to Input.GetMouseButton(1) for right mouse button
+        if (Input.GetMouseButton(0) && fuelSystem.IsFuelAvailable() && isDodging == false) // Change to Input.GetMouseButton(1) for right mouse button
         {
             fuelSystem.StartParticleSystem();
             
@@ -148,7 +151,7 @@ public class Player : MonoBehaviour
             {
                 particleSys.Stop();
             }
-        }*/
+        }
 
         //ALL STAMINA BASED THINGS SHOULD BE DONE UNDER HERE ---- SO WE ONLY NEED TO STAMINA CHECK ONCE PER UPDATE
         if( staminaWorkingValue>= 0.5f)
@@ -185,6 +188,15 @@ public class Player : MonoBehaviour
         float verticalInput = Input.GetAxisRaw("Vertical");
 
         movement = new Vector3(horizontalInput, 0.0f, verticalInput).normalized;
+
+        if(horizontalInput != 0 || verticalInput != 0)
+        {
+            playerAnimation.SetBool("isMoving", true);
+        }
+        else
+        {
+            playerAnimation.SetBool("isMoving", false);
+        }
         
         rb.velocity = movement * speed;
     }
@@ -204,7 +216,7 @@ public class Player : MonoBehaviour
 
             // Debug.Log(hit.point.x > transform.position.x);
 
-            if (hit.point.x > transform.position.x)
+            if (transform.position.x > hit.point.x)
             {
                 // Flip the sprite to face left
                 // gameObject.GetChild(0).GetComponent<SpriteRenderer>().flipX = true;
@@ -219,15 +231,15 @@ public class Player : MonoBehaviour
             
 
             //
-            /*if(Input.GetMouseButton(0))                                                            
-            {
-                //Debug Sphere to show size
-                GameObject point1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                point1.transform.position = hit.point;
+            // if(Input.GetMouseButton(0))                                                            
+            // {
+            //     //Debug Sphere to show size
+            //     GameObject point1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            //     point1.transform.position = hit.point;
 
-                point1.AddComponent<DebugDestory>();
-                Destroy(point1.GetComponent<SphereCollider>());
-            }*/
+            //     point1.AddComponent<DebugDestory>();
+            //     Destroy(point1.GetComponent<SphereCollider>());
+            // }
 
             // int rotation = ((((int)rotationZ / 45) + 1) * 45) - (45 / 2);                            // If we want to d snapped directions
 
@@ -239,7 +251,8 @@ public class Player : MonoBehaviour
     {
         inInventory = !inInventory;
         inventoryUI.SetActive(inInventory);
-        inventoryUI.gameObject.transform.Find("Border").GetComponent<RectTransform>().anchoredPosition = new Vector2(-0, 0);
+        inventorySystem.SetActive(inInventory);
+        //inventoryUI.gameObject.transform.Find("Border").GetComponent<RectTransform>().anchoredPosition = new Vector2(-0, 0);
     }
     //TODO disable character movement when dodging 
     IEnumerator Dodge()
