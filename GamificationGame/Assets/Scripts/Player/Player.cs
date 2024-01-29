@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     public PlayerFuelSystem fuelSystem;
     public Stamina stamina; //Reference to the stamina
     private bool running = false;
+    public bool isMoving = false;
     private float runSpeed = 18.0f;
     public float runStaminaWeight; 
     public float runStaminaCost; //base cost for stamina speed
@@ -178,16 +179,31 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(running)
+        if (inInventory)
+        {
+            return;
+        }
+
+        if (running)
         {
             Stamina.UseStamina(runStaminaCost * runStaminaWeight);
         }
+        
 
 
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput = Input.GetAxisRaw("Vertical");
 
         movement = new Vector3(horizontalInput, 0.0f, verticalInput).normalized;
+
+        if(movement.sqrMagnitude != 0) 
+        {
+            isMoving = true;
+        }
+        else 
+        {
+            isMoving = false;
+        }
 
         if(horizontalInput != 0 || verticalInput != 0)
         {

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d133d16e6d60f6c4c8cb6d1079112d61
+guid: cb484604867fbb24daf2b0059a03a4bf
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -33,7 +33,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -70,7 +70,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -129,13 +129,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SFG_Player_Character_Walking_Anim-Sheet_0
+      name: SFG_Player_Character_Dash_Forward_Anim-Sheet_0
       rect:
         serializedVersion: 2
-        x: 1
+        x: 0
         y: 0
-        width: 31
-        height: 45
+        width: 48
+        height: 48
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -143,20 +143,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5292fca006d5f144cbfccbc0a397de5b
-      internalID: -308744249
+      spriteID: a2c89013d75f6f24eaa855659b4f4210
+      internalID: -454127136
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SFG_Player_Character_Walking_Anim-Sheet_1
+      name: SFG_Player_Character_Dash_Forward_Anim-Sheet_1
       rect:
         serializedVersion: 2
         x: 48
         y: 0
-        width: 31
-        height: 45
+        width: 48
+        height: 48
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -164,20 +164,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a2714c10cdcee3745bbf332460034e2f
-      internalID: 1702263473
+      spriteID: 59e736099c137c745baad04ac23bd16d
+      internalID: -960015291
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SFG_Player_Character_Walking_Anim-Sheet_2
+      name: SFG_Player_Character_Dash_Forward_Anim-Sheet_2
       rect:
         serializedVersion: 2
-        x: 94
+        x: 96
         y: 0
-        width: 31
-        height: 45
+        width: 48
+        height: 48
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -185,20 +185,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c7676d05b08847746a6dd6c96bb1cb83
-      internalID: 1568459951
+      spriteID: 2902a330d2c1a26409715a2bb264856b
+      internalID: -1962403676
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SFG_Player_Character_Walking_Anim-Sheet_3
+      name: SFG_Player_Character_Dash_Forward_Anim-Sheet_3
       rect:
         serializedVersion: 2
-        x: 142
+        x: 144
         y: 0
-        width: 31
-        height: 45
+        width: 48
+        height: 48
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -206,20 +206,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1aad8c1b6aa935e45b5ef42355d3c554
-      internalID: -1739517401
+      spriteID: 2ae5193f61c3bf5418fb20fc141507d0
+      internalID: -711225768
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SFG_Player_Character_Walking_Anim-Sheet_4
+      name: SFG_Player_Character_Dash_Forward_Anim-Sheet_4
       rect:
         serializedVersion: 2
-        x: 191
+        x: 192
         y: 0
-        width: 31
-        height: 45
+        width: 48
+        height: 48
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -227,20 +227,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0f63a80871b057845baca30a50627b22
-      internalID: 1058539635
+      spriteID: 14f137a006bdcd543921cd81419b1ed1
+      internalID: -1473192698
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SFG_Player_Character_Walking_Anim-Sheet_5
+      name: SFG_Player_Character_Dash_Forward_Anim-Sheet_5
       rect:
         serializedVersion: 2
-        x: 239
+        x: 240
         y: 0
-        width: 31
-        height: 45
+        width: 48
+        height: 48
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -248,20 +248,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 461ee6772511b354bb447fdeb022e103
-      internalID: -689413830
+      spriteID: 4f6b73fd8eedee947a4ba272293764c4
+      internalID: -585512083
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SFG_Player_Character_Walking_Anim-Sheet_6
+      name: SFG_Player_Character_Dash_Forward_Anim-Sheet_6
       rect:
         serializedVersion: 2
         x: 288
         y: 0
-        width: 31
-        height: 45
+        width: 48
+        height: 48
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -269,8 +269,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c831edd2591d2194ea8183310b069657
-      internalID: -234874833
+      spriteID: 073d021a8f0a7554ebe9263bb45ef70c
+      internalID: -1405149611
       vertices: []
       indices: 
       edges: []
@@ -278,7 +278,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: fcac3f9fd782a794ea2baa31bd551ce5
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -286,13 +286,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      SFG_Player_Character_Walking_Anim-Sheet_0: -308744249
-      SFG_Player_Character_Walking_Anim-Sheet_1: 1702263473
-      SFG_Player_Character_Walking_Anim-Sheet_2: 1568459951
-      SFG_Player_Character_Walking_Anim-Sheet_3: -1739517401
-      SFG_Player_Character_Walking_Anim-Sheet_4: 1058539635
-      SFG_Player_Character_Walking_Anim-Sheet_5: -689413830
-      SFG_Player_Character_Walking_Anim-Sheet_6: -234874833
+      SFG_Player_Character_Dash_Forward_Anim-Sheet_0: -454127136
+      SFG_Player_Character_Dash_Forward_Anim-Sheet_1: -960015291
+      SFG_Player_Character_Dash_Forward_Anim-Sheet_2: -1962403676
+      SFG_Player_Character_Dash_Forward_Anim-Sheet_3: -711225768
+      SFG_Player_Character_Dash_Forward_Anim-Sheet_4: -1473192698
+      SFG_Player_Character_Dash_Forward_Anim-Sheet_5: -585512083
+      SFG_Player_Character_Dash_Forward_Anim-Sheet_6: -1405149611
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
