@@ -1,5 +1,6 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -16,6 +17,23 @@ public class Player : MonoBehaviour
     private float runSpeed = 18.0f;
     public float runStaminaWeight; 
     public float runStaminaCost; //base cost for stamina speed
+
+    //player variables for stamina calcs
+
+    public float playerHealth = 100;
+    public float maxHP = 100;
+    public GameObject healthSlider;
+    private Slider sliderHealth;
+    public GameObject canOne;
+    public GameObject canTwo;
+    public GameObject canThree;
+    public int numOfCans = 1;
+    public int maxCans = 3;
+
+    public GameObject raycaster;
+
+    
+
     private float staminaWorkingValue;
     private Ray pointerRay; //raycast for mouse position
     public LayerMask layerMask;  //layermask for mouse-over collision
@@ -57,6 +75,9 @@ public class Player : MonoBehaviour
         speed = defaultSpeed;
         staminaWorkingValue = stamina.CheckStamina();
         rb = GetComponent<Rigidbody>();
+        sliderHealth = healthSlider.GetComponentInChildren<Slider>();
+        sliderHealth.value = playerHealth;
+        UpdateCanister(0);
     }
 
     //
@@ -340,6 +361,67 @@ public class Player : MonoBehaviour
 
     }
 
+    public void UpdateHealth(int change)
+    {
+        if ((playerHealth + change) >= maxHP)
+        {
+            playerHealth = maxHP;
+            sliderHealth.value = playerHealth;
+        }
+        else
+        {
+            playerHealth += change;
+            sliderHealth.value = playerHealth;
+        }
+    }
+
+    public void UpdateCanister(int change)
+    {
+        if ((numOfCans + change) >= maxCans)
+        {
+            numOfCans = maxCans;
+        }
+        else
+        {
+            numOfCans += change;
+        }
+        Color color;
+        switch (numOfCans)
+        {
+            case 0:
+                ColorUtility.TryParseHtmlString("#000000", out color);
+                canOne.GetComponent<Image>().color = color;
+                ColorUtility.TryParseHtmlString("#000000", out color);
+                canTwo.GetComponent<Image>().color = color;
+                ColorUtility.TryParseHtmlString("#000000", out color);
+                canThree.GetComponent<Image>().color = color;
+                break;
+            case 1:
+                ColorUtility.TryParseHtmlString("#FFFFFF", out color);
+                canOne.GetComponent<Image>().color = color;
+                ColorUtility.TryParseHtmlString("#000000", out color);
+                canTwo.GetComponent<Image>().color = color;
+                ColorUtility.TryParseHtmlString("#000000", out color);
+                canThree.GetComponent<Image>().color = color;
+                break;
+            case 2:
+                ColorUtility.TryParseHtmlString("#FFFFFF", out color);
+                canOne.GetComponent<Image>().color = color;
+                ColorUtility.TryParseHtmlString("#FFFFFF", out color);
+                canTwo.GetComponent<Image>().color = color;
+                ColorUtility.TryParseHtmlString("#000000", out color);
+                canThree.GetComponent<Image>().color = color;
+                break;
+            case 3:
+                ColorUtility.TryParseHtmlString("#FFFFFF", out color);
+                canOne.GetComponent<Image>().color = color;
+                ColorUtility.TryParseHtmlString("#FFFFFF", out color);
+                canTwo.GetComponent<Image>().color = color;
+                ColorUtility.TryParseHtmlString("#FFFFFF", out color);
+                canThree.GetComponent<Image>().color = color;
+                break;
+        }
+    }
 
 
 

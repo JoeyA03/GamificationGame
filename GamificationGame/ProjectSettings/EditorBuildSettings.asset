@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/JoeysPlaygroundSmilieFace.unity
+    guid: 3b0daa5e8210ec74d8dc4ad695533c25
   m_configObjects: {}
