@@ -4,6 +4,7 @@ public class ChestSystem : MonoBehaviour
 {
     public bool playerIn;
     public bool inChest;
+    public float checkRadius;
     public LayerMask playerLayerMask;
 
     Collider boxCollider;
@@ -33,7 +34,7 @@ public class ChestSystem : MonoBehaviour
 
     private void FixedUpdate()
     {
-        playerIn = Physics.SphereCast(this.gameObject.transform.position, 3f, -transform.forward, out hit, 2f, playerLayerMask);
+        playerIn = Physics.SphereCast(this.gameObject.transform.position, checkRadius, -transform.forward, out hit, checkRadius, playerLayerMask);
 
         //if (Input.GetKeyDown(KeyCode.E)) 
         //{

@@ -15,6 +15,8 @@ public class Raycaster : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 50f, player.transform.position.z);
+
         if (player != null)
         {
             // Get the direction towards the player
