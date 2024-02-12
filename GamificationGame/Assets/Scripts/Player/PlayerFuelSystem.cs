@@ -20,7 +20,7 @@ public class PlayerFuelSystem : MonoBehaviour
         currentFuel = maxFuel;
 
         // Find the Slider component in the Canvas and assign it to fuelSlider
-        fuelSlider = GameObject.Find("Fuel").GetComponent<Slider>();
+        //fuelSlider = GameObject.Find("Fuel").GetComponent<Slider>();
         UpdateFuelUI();
     }
 

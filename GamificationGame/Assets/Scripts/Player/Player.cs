@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private float speed;
-    public float defaultSpeed = 15.0f;
+    public PlayerStats playerStats;
+    public float speed;
+    private float defaultSpeed;
     public Rigidbody rb;
     public ParticleSystem particleSys; // Reference to the particle system
     private bool isParticleSystemActive = false;
@@ -30,7 +31,7 @@ public class Player : MonoBehaviour
     public int numOfCans = 1;
     public int maxCans = 3;
 
-    public GameObject raycaster;
+    //public GameObject raycaster;
 
     
 
@@ -72,12 +73,26 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        speed = defaultSpeed;
+        
         staminaWorkingValue = stamina.CheckStamina();
         rb = GetComponent<Rigidbody>();
+        
+        UpdateCanister(0);
+        Init();
+    }
+
+    private void Init() 
+    {
+        //Stats
+        maxHP = playerStats.maxHealth;
+        defaultSpeed = playerStats.baseSpeed;
+        //defaultSpeed = playerStats.baseSpeed;
+
+        speed = defaultSpeed;
+
+        //UI
         sliderHealth = healthSlider.GetComponentInChildren<Slider>();
         sliderHealth.value = playerHealth;
-        UpdateCanister(0);
     }
 
     //
@@ -95,36 +110,10 @@ public class Player : MonoBehaviour
         }
 
         MouseMovement();
-        // // Get the mouse position in screen space.
-        // Vector3 mousePositionScreen = Input.mousePosition;
-
-        // // Convert the mouse position from screen space to world space.
-        // Vector3 mousePositionWorld = Camera.main.ScreenPointToRay(new Vector3(mousePositionScreen.x, mousePositionScreen.y, Camera.main.transform.position.y));
-
         
 
-        // // Check if the mouse is on the left or right side of the player
-        // if (mousePositionWorld.x < transform.position.x)
-        // {
-        //     // Flip the sprite to face left
-        //     GetComponent<SpriteRenderer>().flipX = true;
-        // }
-        // else
-        // {
-        //     // Flip the sprite to face right
-        //     GetComponent<SpriteRenderer>().flipX = false;
-        // }
-
         staminaWorkingValue = stamina.CheckStamina();
-        // Calculate the direction from the player to the mouse.
-
-        // Vector3 lookDirection = mousePositionWorld - transform.position;                                                                                                                
-        // lookDirection.y = 0;                                                                                                                                              
-        // if (lookDirection != Vector3.zero)                                                                                       
-        // {                                                                                       
-        //     transform.forward = lookDirection.normalized;                                                                                        
-        // }                                                                                       
-
+                                                                                     
         // Player movement code (e.g., using WASD or arrow keys).
        
 
@@ -148,6 +137,7 @@ public class Player : MonoBehaviour
             Stamina.UseStamina(meleeStaminaCost * (meleeWeightEffective*playerWeight));
             StartCoroutine(OnMelee());
         }
+
         // FLAME THROWA
         if (Input.GetMouseButton(0) && fuelSystem.IsFuelAvailable() && isDodging == false) // Change to Input.GetMouseButton(1) for right mouse button
         {
@@ -159,8 +149,6 @@ public class Player : MonoBehaviour
                 particleSys.Play();
             }
             isParticleSystemActive = true;
-
-            
         }
         else
         {
@@ -195,7 +183,6 @@ public class Player : MonoBehaviour
             running = false;
             speed = defaultSpeed;
         }
-
     }
 
     void FixedUpdate()
@@ -323,10 +310,10 @@ public class Player : MonoBehaviour
     IEnumerator OnMelee()
     {
         isMeleeing = true;
-        // foreach(RaycastHit hit in Physics.CapsuleCastAll(this.gameObject.transform.GetChild(2), 2, transform.right))
-        // {
-        //     Debug.Log("Added " + hit.collider.name);
-        // }
+        // foreach(RaycastHit hit in Physics.CapsuleCastAll(this.gameObject.transform.GetChild(2).GetChild(0).position, 2f, transform.right, 1f, hitLayerMask))
+        //{
+        //    Debug.Log("Added " + hit.collider.name);
+        //}
 
         //Debug Sphere to show hit location
         GameObject point1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -342,13 +329,13 @@ public class Player : MonoBehaviour
             Debug.Log("Attacking");
 
             //TODO CHANGE THIS  TO A RAYCAST IN THE FUTURE
-            foreach(RaycastHit hit in Physics.SphereCastAll(this.gameObject.transform.GetChild(2).GetChild(0).position, 1, transform.up, 0f, hitLayerMask))
+            foreach(RaycastHit hit in Physics.SphereCastAll(this.gameObject.transform.GetChild(2).GetChild(0).position, 1, transform.right, 1f, hitLayerMask))
             {
                 Debug.Log("Added " + hit.collider.name);
                 if(hit.rigidbody != null)
                 {
-                    hit.rigidbody.AddForce(-(hit.point - this.transform.position).normalized * 1, ForceMode.Impulse);
-                    Debug.Log(hit.point);
+                    hit.rigidbody.AddForce((hit.transform.position - this.transform.position).normalized * .5f, ForceMode.Impulse);
+                    //Debug.Log(hit.point);
                     Debug.Log("Hit Dumpster");
                 }
 
