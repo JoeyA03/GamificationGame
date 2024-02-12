@@ -18,6 +18,8 @@ public class Player : MonoBehaviour
     private float runSpeed = 18.0f;
     public float runStaminaWeight; 
     public float runStaminaCost; //base cost for stamina speed
+    public StimuliSystem stimuli;   // Stimuli Effect
+     
 
     //player variables for stamina calcs
 
@@ -30,10 +32,6 @@ public class Player : MonoBehaviour
     public GameObject canThree;
     public int numOfCans = 1;
     public int maxCans = 3;
-
-    //public GameObject raycaster;
-
-    
 
     private float staminaWorkingValue;
     private Ray pointerRay; //raycast for mouse position
@@ -95,7 +93,7 @@ public class Player : MonoBehaviour
         sliderHealth.value = playerHealth;
     }
 
-    //
+
     void Update()   
     {
         if (Input.GetKeyDown(KeyCode.E))
