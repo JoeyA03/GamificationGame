@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class ChestSystem : MonoBehaviour
 {
@@ -11,6 +12,22 @@ public class ChestSystem : MonoBehaviour
     RaycastHit hit;
 
     public GameObject chestUI;
+    public const float tileSizeWidth = 32;
+    public const float tileSizeHeight = 32;
+
+    InventoryItem[,] inventoryItemSlot;
+    //RectTransform rectTransform;
+    RectTransform rectTransform;
+
+
+    public int sizeWidth, sizeHeight;
+
+
+    Vector2 positionOnTheGrid = new Vector2();
+    Vector2Int tileGridPosition = new Vector2Int();
+
+    public GameObject itemPrefab;
+    public List<ItemData> items;
 
 
 
@@ -54,5 +71,41 @@ public class ChestSystem : MonoBehaviour
 
 
     }
+
+    private void CreateItem(int posX, int posY)
+    {
+
+    }
+
+    
+
+
+
+    //Chest tool setting options
+    public void SetResourceSelections(bool[] resourceType)
+    {
+
+    }
+    public void SetMinCounts(int[] minCount)
+    {
+
+    }
+    public void SetMaxCounts(int[] maxCount)
+    {
+
+    }
+    public void SetPercentChance(int[] percentToSpawn)
+    {
+
+    }
+
+
+
+
+
+
+
+
+
 
 }

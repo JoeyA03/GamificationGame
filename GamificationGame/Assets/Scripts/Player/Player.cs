@@ -18,6 +18,8 @@ public class Player : MonoBehaviour
     private float runSpeed = 18.0f;
     public float runStaminaWeight; 
     public float runStaminaCost; //base cost for stamina speed
+    public StimuliSystem stimuli;   // Stimuli Effect
+     
 
     //player variables for stamina calcs
 
@@ -30,10 +32,6 @@ public class Player : MonoBehaviour
     public GameObject canThree;
     public int numOfCans = 1;
     public int maxCans = 3;
-
-    //public GameObject raycaster;
-
-    
 
     private float staminaWorkingValue;
     private Ray pointerRay; //raycast for mouse position
@@ -95,7 +93,7 @@ public class Player : MonoBehaviour
         sliderHealth.value = playerHealth;
     }
 
-    //
+
     void Update()   
     {
         if (Input.GetKeyDown(KeyCode.E))
@@ -164,25 +162,25 @@ public class Player : MonoBehaviour
         }
 
         //ALL STAMINA BASED THINGS SHOULD BE DONE UNDER HERE ---- SO WE ONLY NEED TO STAMINA CHECK ONCE PER UPDATE
-        if( staminaWorkingValue>= 0.5f)
-        {
-            if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
-            {
-                running = true;
-                speed = runSpeed;
-            }
-        }
-        else
-        {
-            running = false;
-            speed = defaultSpeed;
-        }
-        if (Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.RightControl))
-        {
-            Debug.Log("lifted");
-            running = false;
-            speed = defaultSpeed;
-        }
+        //if( staminaWorkingValue>= 0.5f)
+        //{
+        //    if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
+        //    {
+        //        running = true;
+        //        speed = runSpeed;
+        //    }
+        //}
+        //else
+        //{
+        //    running = false;
+        //    speed = defaultSpeed;
+        //}
+        //if (Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.RightControl))
+        //{
+        //    Debug.Log("lifted");
+        //    running = false;
+        //    speed = defaultSpeed;
+        //}
     }
 
     void FixedUpdate()
@@ -197,8 +195,6 @@ public class Player : MonoBehaviour
             Stamina.UseStamina(runStaminaCost * runStaminaWeight);
         }
         
-
-
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput = Input.GetAxisRaw("Vertical");
 

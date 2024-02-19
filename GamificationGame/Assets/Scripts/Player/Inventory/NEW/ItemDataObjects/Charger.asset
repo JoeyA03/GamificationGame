@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a327d22ea5df1574ea93e9df549099cb, type: 3}
-  m_Name: TestItem3
+  m_Name: Charger
   m_EditorClassIdentifier: 
-  width: 3
+  width: 2
   height: 2
-  itemIcon: {fileID: 21300000, guid: a6299ea548d5dc047b5daf272e6a0e17, type: 3}
+  itemIcon: {fileID: 21300000, guid: 1edba14bc77bb28468bad5ba2273dbbc, type: 3}
   id: 
   displayName: 
   prefab: {fileID: 0}

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3283526071975558785}
   - component: {fileID: 3283526071975558784}
   m_Layer: 5
-  m_Name: Item
+  m_Name: Pastel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60,14 +60,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.30386186, g: 1, b: 0, a: 0.62352943}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a6299ea548d5dc047b5daf272e6a0e17, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4e32606e8d5b81342bd0167c03bbc510, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -89,7 +89,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6c320abdfadf8644bac553acd25a23d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemData: {fileID: 11400000, guid: e45c258e68bfcd74a9139b19ca6a18c5, type: 2}
+  itemData: {fileID: 11400000, guid: 0d3bfb6577431a14fabd731b61b477b2, type: 2}
   onGridPositionX: 0
   onGridPositionY: 0
   rotated: 0

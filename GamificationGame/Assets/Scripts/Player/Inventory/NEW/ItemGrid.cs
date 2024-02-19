@@ -20,6 +20,8 @@ public class ItemGrid : MonoBehaviour
     public GameObject itemPrefab;
     public List<ItemData> items;
 
+    
+
 
     public void Start()
     {
