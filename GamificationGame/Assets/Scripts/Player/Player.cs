@@ -162,25 +162,25 @@ public class Player : MonoBehaviour
         }
 
         //ALL STAMINA BASED THINGS SHOULD BE DONE UNDER HERE ---- SO WE ONLY NEED TO STAMINA CHECK ONCE PER UPDATE
-        if( staminaWorkingValue>= 0.5f)
-        {
-            if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
-            {
-                running = true;
-                speed = runSpeed;
-            }
-        }
-        else
-        {
-            running = false;
-            speed = defaultSpeed;
-        }
-        if (Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.RightControl))
-        {
-            Debug.Log("lifted");
-            running = false;
-            speed = defaultSpeed;
-        }
+        //if( staminaWorkingValue>= 0.5f)
+        //{
+        //    if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
+        //    {
+        //        running = true;
+        //        speed = runSpeed;
+        //    }
+        //}
+        //else
+        //{
+        //    running = false;
+        //    speed = defaultSpeed;
+        //}
+        //if (Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.RightControl))
+        //{
+        //    Debug.Log("lifted");
+        //    running = false;
+        //    speed = defaultSpeed;
+        //}
     }
 
     void FixedUpdate()
@@ -195,8 +195,6 @@ public class Player : MonoBehaviour
             Stamina.UseStamina(runStaminaCost * runStaminaWeight);
         }
         
-
-
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput = Input.GetAxisRaw("Vertical");
 
