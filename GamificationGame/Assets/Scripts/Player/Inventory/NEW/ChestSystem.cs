@@ -12,8 +12,6 @@ public class ChestSystem : MonoBehaviour
 
     public GameObject chestUI;
 
-
-
     private void Start()
     {
         boxCollider = GetComponent<Collider>();
@@ -24,14 +22,8 @@ public class ChestSystem : MonoBehaviour
         if (playerIn && Input.GetKeyDown(KeyCode.E))
         {
             inChest = !inChest;
-            //hit.transform.GetComponent<Player>().InventorySet();s
-
-            Debug.Log("hello");
         }
-
     }
-
-
     private void FixedUpdate()
     {
         playerIn = Physics.SphereCast(this.gameObject.transform.position, checkRadius, -transform.forward, out hit, checkRadius, playerLayerMask);
@@ -50,9 +42,5 @@ public class ChestSystem : MonoBehaviour
         //}
 
         chestUI.SetActive(inChest);
-
-
-
     }
-
 }
