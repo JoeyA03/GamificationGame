@@ -13,12 +13,18 @@ public class TestEnemy : MonoBehaviour
 
     private void Awake()
     {
-        playerObject = GameObject.Find("Player");    
+        playerObject = GameObject.Find("Player");   // FIND A BETTER WAY TO DO THIS RATHER/CHANGE TO FIND TAG???
     }
 
     private void Update()
     {
-        this.transform.position += this.transform.position - playerObject.transform.position;
+        //this.transform.position += this.transform.position - playerObject.transform.position;
+    }
+
+    public void followPlayer() 
+    {
+
+    
     }
 
     public void Attack() 

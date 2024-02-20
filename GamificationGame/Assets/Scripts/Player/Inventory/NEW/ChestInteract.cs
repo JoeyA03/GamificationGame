@@ -1,27 +1,25 @@
-using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine;
 
-//[RequireComponent(typeof(ItemGrid))]
-public class GridInteract : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class ChestInteract : MonoBehaviour
 {
     public TetrisInventorySystem inventoryController;
-    public ItemGrid itemGrid;
+    public ChestGrid itemGrid;
 
     private void Awake()
     {
         inventoryController = FindObjectOfType(typeof(TetrisInventorySystem)) as TetrisInventorySystem;
-        itemGrid = GetComponent<ItemGrid>();
+        //itemGrid = GetComponent<ItemGrid>();
     }
-
+     
     public void OnPointerEnter(PointerEventData eventData)
     {
-        inventoryController.SelectedItemGrid = itemGrid;
+        //inventoryController.SelectedItemGrid = itemGrid;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         inventoryController.SelectedItemGrid = null;
-        
+
     }
 }
-

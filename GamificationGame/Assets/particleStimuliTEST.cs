@@ -5,16 +5,16 @@ public class particleStimuliTEST : MonoBehaviour
 {
     [SerializeField] private ParticleSystem ps;
     public float damage;
-    public float invincibilitySpeed;
+    public float invincibilitySpeed;    // CHANGE HEALTH TO INCLUDE THIS/DISCUSS WITH TEAM
 
     [SerializeField]
-    private List<GameObject> objcetsHit = new List<GameObject>();
+    private List<GameObject> objcetsHit = new List<GameObject>();   // DELETE, NO NEED FOR THIS SINCE HEALTH HAS STUNCOUNTER ALREADY
 
 
-    // these lists are used to contain the particles which match
-    // the trigger conditions each frame.
-    List<ParticleSystem.Particle> enter = new List<ParticleSystem.Particle>();
-    //List<ParticleSystem.Particle> exit = new List<ParticleSystem.Particle>();
+    //// these lists are used to contain the particles which match
+    //// the trigger conditions each frame.
+    //List<ParticleSystem.Particle> enter = new List<ParticleSystem.Particle>();
+    ////List<ParticleSystem.Particle> exit = new List<ParticleSystem.Particle>();
 
     private void OnEnable()
     {
@@ -23,17 +23,22 @@ public class particleStimuliTEST : MonoBehaviour
 
     private void OnParticleCollision(GameObject other)
     {
-
-        if (!objcetsHit.Contains(other)) 
+        if (other.TryGetComponent<Health>(out Health enm)) 
         {
-            objcetsHit.Add(other);
-            if (other.TryGetComponent<Health>(out Health enm)) 
+            if (!enm.isHit) 
             {
+                enm.takeDamage(damage);
                 Debug.Log("TAKINGDAMGAGE");
-                //enm.takeDamage(damage);
-            }
 
+            }
+            //enm.takeDamage(damage);
         }
+
+        //if (!objcetsHit.Contains(other)) 
+        //{
+        //    objcetsHit.Add(other);
+
+        //}
     }
 
     //private void OnParticleTrigger()

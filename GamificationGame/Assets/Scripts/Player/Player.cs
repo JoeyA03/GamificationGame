@@ -56,8 +56,10 @@ public class Player : MonoBehaviour
     public float meleeWeightEffective = 2f;
     public float meleeStaminaCost = 5f;
 
-    public bool inInventory = false;                // Probably change this into a gamemanager.
+    public bool inInventory = false;    // Probably change this into a gamemanager.
+    public bool inChest = false;
     public GameObject inventoryUI;
+    public GameObject chestUI;
     public GameObject inventorySystem;
 
     //player variables for stamina calcs
@@ -270,10 +272,15 @@ public class Player : MonoBehaviour
     public void InventorySet()
     {
         inInventory = !inInventory;
+
         inventoryUI.SetActive(inInventory);
         inventorySystem.SetActive(inInventory);
-        //inventoryUI.gameObject.transform.Find("Border").GetComponent<RectTransform>().anchoredPosition = new Vector2(-0, 0);
+
+        if(inChest)
+            chestUI.SetActive(inInventory);     // Open Chest inventory if this bool is on
+        rb.velocity = Vector3.zero;     // Make sure that the player is not moving when in invetory;
     }
+
     //TODO disable character movement when dodging 
     IEnumerator Dodge()
     {
