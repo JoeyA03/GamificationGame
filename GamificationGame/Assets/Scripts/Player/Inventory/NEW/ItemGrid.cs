@@ -21,6 +21,7 @@ public class ItemGrid : MonoBehaviour
 
     public GameObject itemPrefab;
     public List<ItemData> items;
+    public List<InventoryItem> itemsData;
 
 
     public void Start()
@@ -74,6 +75,8 @@ public class ItemGrid : MonoBehaviour
         int selectedItemID = UnityEngine.Random.Range(0, items.Count);
         inventoryItem.Set(items[selectedItemID]);
 
+        itemsData.Add(inventoryItem);
+
         PlaceItem(inventoryItem, posX, posY);
     }
 
@@ -99,9 +102,7 @@ public class ItemGrid : MonoBehaviour
             }
         }
     }
-
-    
-
+        
     internal InventoryItem GetItem(int x, int y)
     {
         return inventoryItemSlot[x, y];

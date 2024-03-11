@@ -67,10 +67,7 @@ public class Player : MonoBehaviour
 
     //Player Animation Values
     public Animator playerAnimation;
-
     
-
-
     void Start()
     {
         
@@ -250,27 +247,14 @@ public class Player : MonoBehaviour
                 // gameObject.GetChild(0).GetComponent<SpriteRenderer>().flipX = false;
                 GetComponentInChildren<SpriteRenderer>().flipX = false;
             }
-            
-
-            //
-            // if(Input.GetMouseButton(0))                                                            
-            // {
-            //     //Debug Sphere to show size
-            //     GameObject point1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            //     point1.transform.position = hit.point;
-
-            //     point1.AddComponent<DebugDestory>();
-            //     Destroy(point1.GetComponent<SphereCollider>());
-            // }
-
-            // int rotation = ((((int)rotationZ / 45) + 1) * 45) - (45 / 2);                            // If we want to d snapped directions
+                
 
         }
     }
 
 
     public void InventorySet()
-    {
+    {  
         inInventory = !inInventory;
 
         inventoryUI.SetActive(inInventory);
@@ -313,11 +297,7 @@ public class Player : MonoBehaviour
     IEnumerator OnMelee()
     {
         isMeleeing = true;
-        // foreach(RaycastHit hit in Physics.CapsuleCastAll(this.gameObject.transform.GetChild(2).GetChild(0).position, 2f, transform.right, 1f, hitLayerMask))
-        //{
-        //    Debug.Log("Added " + hit.collider.name);
-        //}
-
+        
         //Debug Sphere to show hit location
         GameObject point1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         point1.transform.position = this.gameObject.transform.GetChild(2).GetChild(0).position;
