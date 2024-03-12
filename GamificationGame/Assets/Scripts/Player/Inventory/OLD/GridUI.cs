@@ -8,13 +8,13 @@ public class GridUI : MonoBehaviour
     public int gridWidth;
     public int gridHeight;
 
-    private GridSystem grid;
+    private GridSystem<int> grid;
 
     public Sprite imageTile;
 
     void Start()
     {
-        grid = new GridSystem(gridWidth, gridHeight);
+        grid = new GridSystem<int>(gridWidth, gridHeight);
 
         for(int i=0; i<grid.gridArray.GetLength(0); i++)
         {

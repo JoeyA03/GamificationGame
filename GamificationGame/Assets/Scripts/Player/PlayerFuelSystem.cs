@@ -11,7 +11,7 @@ public class PlayerFuelSystem : MonoBehaviour
     public float fuelRechargeDelay = 3.0f;   // Time in seconds before fuel starts recharging
 
     private float currentFuel;
-    private Slider fuelSlider; // Reference to the fuel slider UI element
+    public Slider fuelSlider; // Reference to the fuel slider UI element
     private bool isUsingParticleSystem = false; // Flag to track particle system usage
     private float timeSinceLastUse = 0.0f; // Time since last particle system usage
 
@@ -20,7 +20,7 @@ public class PlayerFuelSystem : MonoBehaviour
         currentFuel = maxFuel;
 
         // Find the Slider component in the Canvas and assign it to fuelSlider
-        fuelSlider = GameObject.Find("Fuel").GetComponent<Slider>();
+        //fuelSlider = GameObject.Find("Fuel").GetComponent<Slider>();
         UpdateFuelUI();
     }
 
