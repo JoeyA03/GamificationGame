@@ -6,7 +6,7 @@ using UnityEngine;
 public class Stamina : MonoBehaviour
 {
 
-    public Slider staminaSlider;
+    private Slider staminaSlider;
     public float maxStamina = 100.0f;         // Maximum stamina capacity
     public float staminaConsumptionRate = 5.0f;  // Rate at which stamina is consumed per second
     public float staminaRechargeRate = 10.0f;    // Rate at which stamina is recharged per second
