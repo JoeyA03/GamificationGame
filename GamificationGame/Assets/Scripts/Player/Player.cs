@@ -95,45 +95,43 @@ public class Player : MonoBehaviour
 
     void Update()   
     {
+        /// E for interact / Inventory
         if (Input.GetKeyDown(KeyCode.E))
         {
             InventorySet();
         }
+
+
+        // If the player is in inventory, remove access to player functions
+        if (inInventory) return;
+
         
-
-        if(inInventory)
-        {
-            return;
-        }
-
-        MouseMovement();
         
 
         staminaWorkingValue = stamina.CheckStamina();
-                                                                                     
-        // Player movement code (e.g., using WASD or arrow keys).
-       
-
-        // Calculate the movement vector based on input.
-        // 
-
-        // Translate the player based on the movement vector.
-        // transform.Translate(movement * speed * Time.deltaTime, Space.World);
-
+        /// Space for Dodge
+        // Rough Dash 
         if (Input.GetKeyDown(KeyCode.Space) && !isDodging && Time.time - lastDodgeTime >= dodgeCooldown)
         {
             dodgeDirection = transform.forward; // Save the current look direction
             lastDodgeTime = Time.time;
-            Stamina.UseStamina(dodgeStaminaCost * (dodgeWeightEffective*playerWeight));
+            Stamina.UseStamina(dodgeStaminaCost * (dodgeWeightEffective * playerWeight));
             StartCoroutine(Dodge());
         }
 
+        /// V for Melee
         // rough Melee attack 
         if (Input.GetMouseButton(1) && !isMeleeing)
         {
-            Stamina.UseStamina(meleeStaminaCost * (meleeWeightEffective*playerWeight));
+            Stamina.UseStamina(meleeStaminaCost * (meleeWeightEffective * playerWeight));
             StartCoroutine(OnMelee());
         }
+
+        
+
+        /// Shift for Blocking
+        /// Left Click Shooting
+        /// Rifht Click Blocking
 
         // FLAME THROWA
         if (Input.GetMouseButton(0) && fuelSystem.IsFuelAvailable() && isDodging == false) // Change to Input.GetMouseButton(1) for right mouse button
@@ -160,26 +158,8 @@ public class Player : MonoBehaviour
             }
         }
 
-        //ALL STAMINA BASED THINGS SHOULD BE DONE UNDER HERE ---- SO WE ONLY NEED TO STAMINA CHECK ONCE PER UPDATE
-        //if( staminaWorkingValue>= 0.5f)
-        //{
-        //    if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
-        //    {
-        //        running = true;
-        //        speed = runSpeed;
-        //    }
-        //}
-        //else
-        //{
-        //    running = false;
-        //    speed = defaultSpeed;
-        //}
-        //if (Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.RightControl))
-        //{
-        //    Debug.Log("lifted");
-        //    running = false;
-        //    speed = defaultSpeed;
-        //}
+        // Mouse movement.
+        MouseMovement();
     }
 
     void FixedUpdate()

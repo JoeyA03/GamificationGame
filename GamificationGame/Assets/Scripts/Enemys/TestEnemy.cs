@@ -10,6 +10,8 @@ public class TestEnemy : MonoBehaviour
     public float attackRange;
     public float attackSpeed;
 
+    public float enemyRange;
+
 
     private void Awake()
     {
