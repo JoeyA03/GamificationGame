@@ -62,6 +62,11 @@ public class Player : MonoBehaviour
     public GameObject chestUI;
     public GameObject inventorySystem;
 
+    //Dodging values
+    private bool isBlocking = false;
+
+
+
     //player variables for stamina calcs
     public float playerWeight = 1f;
 
@@ -121,18 +126,22 @@ public class Player : MonoBehaviour
 
         /// V for Melee
         // rough Melee attack 
-        if (Input.GetMouseButton(1) && !isMeleeing)
+        if (Input.GetKeyDown(KeyCode.V) && !isMeleeing)
         {
             Stamina.UseStamina(meleeStaminaCost * (meleeWeightEffective * playerWeight));
             StartCoroutine(OnMelee());
         }
 
-        
 
-        /// Shift for Blocking
+
+        /// Right Click  for Blocking
+        if (Input.GetMouseButton(1) && !isBlocking)
+        {
+
+            
+        }
+
         /// Left Click Shooting
-        /// Rifht Click Blocking
-
         // FLAME THROWA
         if (Input.GetMouseButton(0) && fuelSystem.IsFuelAvailable() && isDodging == false) // Change to Input.GetMouseButton(1) for right mouse button
         {

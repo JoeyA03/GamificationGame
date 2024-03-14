@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6634133bc109a244e8c796b6f483752d, type: 3}
+  m_Name: New Player Stats
+  m_EditorClassIdentifier: 
+  baseSpeed: 0
+  runningSpeed: 0
+  dodgeDistance: 0
+  weight: 0
+  defence: 0
+  stamina: 0
+  maxHealth: 0
+  dodgeSpeed: 0
+  dodgeDuration: 0
+  dodgeCooldown: 0
+  dodgeStaminaCost: 0
+  meleeSpeed: 0
+  meleeStaminaCost: 0
