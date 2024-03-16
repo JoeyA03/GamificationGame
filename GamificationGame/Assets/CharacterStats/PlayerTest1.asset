@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerTest1
   m_EditorClassIdentifier: 
   baseSpeed: 15
-  runningSpeed: 20
+  blockingSpeed: 5
   dodgeDistance: 0
   weight: 0
   defence: 0

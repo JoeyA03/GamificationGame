@@ -62,8 +62,9 @@ public class Player : MonoBehaviour
     public GameObject chestUI;
     public GameObject inventorySystem;
 
-    //Dodging values
+    //Blocking values
     private bool isBlocking = false;
+    public float blockingSpeed = 30.0f;
 
 
 
@@ -88,6 +89,7 @@ public class Player : MonoBehaviour
         //Stats
         maxHP = playerStats.maxHealth;
         defaultSpeed = playerStats.baseSpeed;
+        blockingSpeed = playerStats.blockingSpeed;
         //defaultSpeed = playerStats.baseSpeed;
 
         speed = defaultSpeed;
@@ -106,12 +108,16 @@ public class Player : MonoBehaviour
             InventorySet();
         }
 
-
         // If the player is in inventory, remove access to player functions
         if (inInventory) return;
 
-        
-        
+        /// R to refuel
+        if (Input.GetKeyDown(KeyCode.R) && numOfCans > 0) 
+        {
+            fuelSystem.Refill();
+            UpdateCanister(-1);
+        }
+
 
         staminaWorkingValue = stamina.CheckStamina();
         /// Space for Dodge
@@ -132,13 +138,16 @@ public class Player : MonoBehaviour
             StartCoroutine(OnMelee());
         }
 
-
-
         /// Right Click  for Blocking
         if (Input.GetMouseButton(1) && !isBlocking)
         {
-
-            
+            speed = blockingSpeed;
+            this.gameObject.layer = LayerMask.NameToLayer("Player.Blocking");   // change layer to blocking to change hitbox effect
+        }
+        else 
+        {
+            speed = defaultSpeed;
+            this.gameObject.layer = LayerMask.NameToLayer("Player");    // Chaange layer to player to change hitbox effect
         }
 
         /// Left Click Shooting
@@ -240,8 +249,6 @@ public class Player : MonoBehaviour
 
         }
     }
-
-
     public void InventorySet()
     {  
         inInventory = !inInventory;

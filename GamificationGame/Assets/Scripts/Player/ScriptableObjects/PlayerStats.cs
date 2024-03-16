@@ -6,7 +6,7 @@ public class PlayerStats : ScriptableObject
     //Knowns 
 
     public float baseSpeed;
-    public float runningSpeed;
+    public float blockingSpeed;
     public float dodgeDistance;
     public float weight;
     public float defence;
