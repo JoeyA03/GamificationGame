@@ -60,6 +60,8 @@ public class Player : MonoBehaviour
     public GameObject inventoryUI;
     public GameObject inventorySystem;
 
+    public GameObject chestInv;
+
     //player variables for stamina calcs
     public float playerWeight = 1f;
 
@@ -99,6 +101,7 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
         {
             InventorySet();
+            TetrisInventorySystem.Instance.OpenInventory();
         }
         
 
@@ -272,6 +275,7 @@ public class Player : MonoBehaviour
         inInventory = !inInventory;
         inventoryUI.SetActive(inInventory);
         inventorySystem.SetActive(inInventory);
+        chestInv.SetActive(inInventory);
         //inventoryUI.gameObject.transform.Find("Border").GetComponent<RectTransform>().anchoredPosition = new Vector2(-0, 0);
     }
     //TODO disable character movement when dodging 
@@ -406,6 +410,6 @@ public class Player : MonoBehaviour
         }
     }
 
-
+    //
 
 }

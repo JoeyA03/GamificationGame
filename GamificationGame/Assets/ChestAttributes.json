@@ -1,0 +1,112 @@
+{
+    "chest_list": [
+        {
+            "chestName": "AnotherChest",
+            "resourceSelections": [
+                false,
+                false,
+                false,
+                true
+            ],
+            "minCounts": [
+                0,
+                0,
+                0,
+                1
+            ],
+            "maxCounts": [
+                0,
+                0,
+                0,
+                1
+            ],
+            "percentChance": [
+                0,
+                0,
+                0,
+                0
+            ]
+        },
+        {
+            "chestName": "testChest",
+            "resourceSelections": [
+                false,
+                false,
+                false,
+                false
+            ],
+            "minCounts": [
+                0,
+                0,
+                0,
+                0
+            ],
+            "maxCounts": [
+                0,
+                0,
+                0,
+                0
+            ],
+            "percentChance": [
+                0,
+                0,
+                0,
+                0
+            ]
+        },
+        {
+            "chestName": "BrandoCHest",
+            "resourceSelections": [
+                false,
+                false,
+                false,
+                true
+            ],
+            "minCounts": [
+                0,
+                0,
+                0,
+                1
+            ],
+            "maxCounts": [
+                0,
+                0,
+                0,
+                1
+            ],
+            "percentChance": [
+                0,
+                0,
+                0,
+                0
+            ]
+        },
+        {
+            "chestName": "BrandoCHest (6)",
+            "resourceSelections": [
+                false,
+                false,
+                false,
+                false
+            ],
+            "minCounts": [
+                0,
+                0,
+                0,
+                0
+            ],
+            "maxCounts": [
+                0,
+                0,
+                0,
+                0
+            ],
+            "percentChance": [
+                0,
+                0,
+                0,
+                0
+            ]
+        }
+    ]
+}

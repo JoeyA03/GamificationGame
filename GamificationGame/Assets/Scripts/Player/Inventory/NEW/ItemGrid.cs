@@ -11,27 +11,32 @@ public class ItemGrid : MonoBehaviour
     RectTransform rectTransform;
 
 
-    public int sizeWidth, sizeHeight;
-
-
     Vector2 positionOnTheGrid = new Vector2();
     Vector2Int tileGridPosition = new Vector2Int();
 
     public GameObject itemPrefab;
     public List<ItemData> items;
 
-    
+    public int gridSizeX = 8;
+    public int gridSizeY = 8;
 
+
+    
+    public void Awake()
+    {
+        //Init(gridSizeX, gridSizeY);
+    }
 
     public void Start()
     {
         rectTransform = GetComponent<RectTransform>();
-        Init(8, 8);
+        Init(gridSizeX, gridSizeY);
 
         //InventoryItem inventoryItem = Instantiate(itemPrefab).GetComponent<InventoryItem>();
-        CreateRandomItem(5, 2);
-        CreateRandomItem(2, 2);
-        CreateRandomItem(1, 6);
+        //CreateRandomItem(5, 2);
+       // CreateRandomItem(2, 2);
+       // CreateRandomItem(1, 6);
+
 
         //PlaceItem(inventoryItem, 5, 2);
 
@@ -43,13 +48,18 @@ public class ItemGrid : MonoBehaviour
 
     }
 
-    private void CreateRandomItem(int posX, int posY)
+
+    public void CreateItemsInChest()
+    {
+        foreach(ItemData itm in TetrisInventorySystem.Instance.itemsInChest)
+        {
+            CreateRandomItem(UnityEngine.Random.Range(1,gridSizeX - 1),UnityEngine.Random.Range(1,gridSizeY - 1),itm);
+        }
+    }
+    private void CreateRandomItem(int posX, int posY, ItemData itm)
     {
         InventoryItem inventoryItem = Instantiate(itemPrefab).GetComponent<InventoryItem>();
-        
-
-        int selectedItemID = UnityEngine.Random.Range(0, items.Count);
-        inventoryItem.Set(items[selectedItemID]);
+        inventoryItem.Set(itm);
 
         PlaceItem(inventoryItem, posX, posY);
     }
@@ -79,6 +89,7 @@ public class ItemGrid : MonoBehaviour
 
     private void Init(int width, int height)
     {
+        Debug.Log(width + " " + height);
         inventoryItemSlot = new InventoryItem[width, height];
         Vector2 size = new Vector2(width * tileSizeWidth, height * tileSizeHeight);
         rectTransform.sizeDelta = size;
@@ -239,7 +250,7 @@ public class ItemGrid : MonoBehaviour
 
     public bool BoundaryCheck(int posX, int posY, int width, int height) 
     {
-        if(PositionCheck(posX, posY) == false) { return false; }
+        if(PositionCheck(posX, posY) == false) { return false; } 
 
         posX += width - 1;
         posY += height - 1;

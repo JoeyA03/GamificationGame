@@ -1,8 +1,23 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
+
 
 public class TetrisInventorySystem : MonoBehaviour
 {
+    public GameObject playerInventoryChest;
+
+    //singleton shtuff
+    [HideInInspector]
+    public static TetrisInventorySystem instance;
+    public static TetrisInventorySystem Instance { get { return instance; } }
+
+    //getting the chest json into the current scene
+    private List<ChestAttributes> chestDataList = new List<ChestAttributes>();
+
+    public ChestsForJson chests = new ChestsForJson();
+    private const string ChestDataFilePath = "Assets/ChestAttributes.json";
+
     [HideInInspector]
     private ItemGrid selectedItemGrid;
     public ItemGrid SelectedItemGrid { get => selectedItemGrid; set { selectedItemGrid = value; inventoryHighlight.SetParent(value); } }
@@ -20,29 +35,37 @@ public class TetrisInventorySystem : MonoBehaviour
 
     Vector2Int oldPosition;
 
+    //new chest variables for new chest system
+    [HideInInspector]
+    public ChestSystem currentChest;
+    public bool inChestRange = false;
+    private bool inChest = false;
+
+    public List<ItemData> itemsInChest;
+
+
 
     private void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            instance = this;
+        }
         inventoryHighlight = GetComponent<InventoryHighlight>();
+        LoadChestAttributes();
     }
 
+    public void Start()
+    {
+        playerInventoryChest.SetActive(false);
+    }
     public void Update()
     {
         ItemDrag();
-
-
-        //if (Input.GetKeyDown(KeyCode.Q))
-        //{
-        //    if (selectedItem == null)
-        //    {
-        //        CreateRandomItem();
-        //    }
-        //}
-
-        //if (Input.GetKeyDown(KeyCode.E)) 
-        //{
-        //    InsertRandomItem();
-        //}
 
         if (Input.GetKeyDown(KeyCode.R)) 
         {
@@ -62,8 +85,6 @@ public class TetrisInventorySystem : MonoBehaviour
             //Debug.Log(selectedItemGrid.GetGridPosition(Input.mousePosition));
             LeftMouseButtonPress();
         }
-
-        //Debug.Log(selectedItemGrid.GetGridPosition(Input.mousePosition));
     }
 
     private void RotateItem()
@@ -195,5 +216,58 @@ public class TetrisInventorySystem : MonoBehaviour
         {
             rt.position = Input.mousePosition;
         }
+    }
+
+
+    public void OpenInventory()
+    {   
+        if(inChest == false)
+        {
+            if(inChestRange == true)
+            {   
+                //playerInventoryChest.SetActive(true);
+                string currentChestName = currentChest.name;
+                ChestAttributes attributes = chestDataList.Find(data => data.chestName == currentChestName);
+                currentChest.SetResourceSelections(attributes.resourceSelections);
+                currentChest.SetMinCounts(attributes.minCounts);
+                currentChest.SetMaxCounts(attributes.maxCounts);
+                currentChest.SetPercentChance(attributes.percentChance);
+                if(currentChest.itemsMade == false)
+                {
+                   itemsInChest = currentChest.CreateItems(); 
+                   currentChest.itemsMade = true;
+                }
+                currentChest.gameObject.SetActive(true);
+                playerInventoryChest.GetComponent<ItemGrid>().CreateItemsInChest();
+                inChest = true;
+            }
+        }
+        if(inChest == true)
+        {
+            inChest = false;
+        }
+    }
+
+
+    private void LoadChestAttributes()
+    {
+        try
+        {
+            if (File.Exists(ChestDataFilePath))
+            {
+                string json = File.ReadAllText(ChestDataFilePath);
+                chests = JsonUtility.FromJson<ChestsForJson>(json);
+                chestDataList = chests.chest_list;
+            }
+            else
+            {
+                Debug.Log("Chest data file does not exist: " + ChestDataFilePath);
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("Error loading chest attributes: " + e.Message);
+        }
+        
     }
 }
