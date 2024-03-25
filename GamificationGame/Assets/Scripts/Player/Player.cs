@@ -73,12 +73,26 @@ public class Player : MonoBehaviour
 
     //Player Animation Values
     public Animator playerAnimation;
-    
+
+    //player falling values
+    public float playerHeight;
+    public LayerMask whatIsFloor;
+    public float fallingSpeed;
+    public bool isFalling;
+    public bool grounded = true;
+    public bool onSlope;
+
+    //code values i stole from some YT video, hope it works
+    public float maxSlopeAngle;
+    private RaycastHit slopeHit;
+    private CapsuleCollider cc;
+
     void Start()
     {
         
         staminaWorkingValue = stamina.CheckStamina();
         rb = GetComponent<Rigidbody>();
+        cc = GetComponent<CapsuleCollider>();
         
         UpdateCanister(0);
         Init();
@@ -100,8 +114,11 @@ public class Player : MonoBehaviour
     }
 
 
-    void Update()   
+    void Update()
     {
+        grounded = Physics.Raycast(transform.position, Vector3.down, cc.height * 0.5f + 0.1f, whatIsFloor);
+        Debug.DrawRay(transform.position, Vector3.down, Color.red);
+
         /// E for interact / Inventory
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -195,7 +212,22 @@ public class Player : MonoBehaviour
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput = Input.GetAxisRaw("Vertical");
 
-        movement = new Vector3(horizontalInput, 0.0f, verticalInput).normalized;
+        if (OnSlope() && grounded)
+        {
+            movement = new Vector3(horizontalInput, 0.0f, verticalInput).normalized;
+            rb.AddForce(GetSlopeMoveDirection() * speed * 20f, ForceMode.Force);
+
+            if (rb.velocity.y > 0)
+                rb.AddForce(Vector3.down * 80f, ForceMode.Force);
+        }
+        else if (grounded)
+        {
+            movement = new Vector3(horizontalInput, 0.0f, verticalInput).normalized;
+        }
+        else if (!grounded)
+        {
+            movement = new Vector3(horizontalInput, -fallingSpeed, verticalInput).normalized;
+        }
 
         if(movement.sqrMagnitude != 0) 
         {
@@ -214,7 +246,7 @@ public class Player : MonoBehaviour
         {
             playerAnimation.SetBool("isMoving", false);
         }
-        
+
         rb.velocity = movement * speed;
     }
 
@@ -389,6 +421,22 @@ public class Player : MonoBehaviour
         }
     }
 
+    private bool OnSlope()
+    {
+        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, cc.height * 0.5f + 0.3f))
+        {
+            float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
+            onSlope = true;
+            return angle < maxSlopeAngle && angle != 0;
+        }
 
+        onSlope = false;
+        return false;
+    }
+
+    private Vector3 GetSlopeMoveDirection()
+    {
+        return Vector3.ProjectOnPlane(movement, slopeHit.normal).normalized;
+    }
 
 }
