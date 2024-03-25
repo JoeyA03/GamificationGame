@@ -1583,7 +1583,7 @@ MonoBehaviour:
     m_Bits: 256
   Player: {fileID: 381544427}
   camera: {fileID: 963194227}
-  fadedAlpha: 0.33
+  fadedAlpha: 0.01
   FadingMode: 1
   checkPerSecond: 10
   fadeFPS: 30
@@ -2539,7 +2539,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2094858017}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6587e29cbb0025d479e8dabdea1b3a30, type: 3}
   m_Name: 
