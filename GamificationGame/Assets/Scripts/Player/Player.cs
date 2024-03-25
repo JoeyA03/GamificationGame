@@ -56,9 +56,17 @@ public class Player : MonoBehaviour
     public float meleeWeightEffective = 2f;
     public float meleeStaminaCost = 5f;
 
-    public bool inInventory = false;                // Probably change this into a gamemanager.
+    public bool inInventory = false;    // Probably change this into a gamemanager.
+    public bool inChest = false;
     public GameObject inventoryUI;
+    public GameObject chestUI;
     public GameObject inventorySystem;
+
+    //Blocking values
+    private bool isBlocking = false;
+    public float blockingSpeed = 30.0f;
+
+
 
     //player variables for stamina calcs
     public float playerWeight = 1f;
@@ -66,14 +74,25 @@ public class Player : MonoBehaviour
     //Player Animation Values
     public Animator playerAnimation;
 
-    
+    //player falling values
+    public float playerHeight;
+    public LayerMask whatIsFloor;
+    public float fallingSpeed;
+    public bool isFalling;
+    public bool grounded = true;
+    public bool onSlope;
 
+    //code values i stole from some YT video, hope it works
+    public float maxSlopeAngle;
+    private RaycastHit slopeHit;
+    private CapsuleCollider cc;
 
     void Start()
     {
         
         staminaWorkingValue = stamina.CheckStamina();
         rb = GetComponent<Rigidbody>();
+        cc = GetComponent<CapsuleCollider>();
         
         UpdateCanister(0);
         Init();
@@ -84,6 +103,7 @@ public class Player : MonoBehaviour
         //Stats
         maxHP = playerStats.maxHealth;
         defaultSpeed = playerStats.baseSpeed;
+        blockingSpeed = playerStats.blockingSpeed;
         //defaultSpeed = playerStats.baseSpeed;
 
         speed = defaultSpeed;
@@ -94,48 +114,60 @@ public class Player : MonoBehaviour
     }
 
 
-    void Update()   
+    void Update()
     {
+        grounded = Physics.Raycast(transform.position, Vector3.down, cc.height * 0.5f + 0.1f, whatIsFloor);
+        Debug.DrawRay(transform.position, Vector3.down, Color.red);
+
+        /// E for interact / Inventory
         if (Input.GetKeyDown(KeyCode.E))
         {
             InventorySet();
         }
-        
 
-        if(inInventory)
+        // If the player is in inventory, remove access to player functions
+        if (inInventory) return;
+
+        /// R to refuel
+        if (Input.GetKeyDown(KeyCode.R) && numOfCans > 0) 
         {
-            return;
+            fuelSystem.Refill();
+            UpdateCanister(-1);
         }
 
-        MouseMovement();
-        
 
         staminaWorkingValue = stamina.CheckStamina();
-                                                                                     
-        // Player movement code (e.g., using WASD or arrow keys).
-       
-
-        // Calculate the movement vector based on input.
-        // 
-
-        // Translate the player based on the movement vector.
-        // transform.Translate(movement * speed * Time.deltaTime, Space.World);
-
+        /// Space for Dodge
+        // Rough Dash 
         if (Input.GetKeyDown(KeyCode.Space) && !isDodging && Time.time - lastDodgeTime >= dodgeCooldown)
         {
             dodgeDirection = transform.forward; // Save the current look direction
             lastDodgeTime = Time.time;
-            Stamina.UseStamina(dodgeStaminaCost * (dodgeWeightEffective*playerWeight));
+            Stamina.UseStamina(dodgeStaminaCost * (dodgeWeightEffective * playerWeight));
             StartCoroutine(Dodge());
         }
 
+        /// V for Melee
         // rough Melee attack 
-        if (Input.GetMouseButton(1) && !isMeleeing)
+        if (Input.GetKeyDown(KeyCode.V) && !isMeleeing)
         {
-            Stamina.UseStamina(meleeStaminaCost * (meleeWeightEffective*playerWeight));
+            Stamina.UseStamina(meleeStaminaCost * (meleeWeightEffective * playerWeight));
             StartCoroutine(OnMelee());
         }
 
+        /// Right Click  for Blocking
+        if (Input.GetMouseButton(1) && !isBlocking)
+        {
+            speed = blockingSpeed;
+            this.gameObject.layer = LayerMask.NameToLayer("Player.Blocking");   // change layer to blocking to change hitbox effect
+        }
+        else 
+        {
+            speed = defaultSpeed;
+            this.gameObject.layer = LayerMask.NameToLayer("Player");    // Chaange layer to player to change hitbox effect
+        }
+
+        /// Left Click Shooting
         // FLAME THROWA
         if (Input.GetMouseButton(0) && fuelSystem.IsFuelAvailable() && isDodging == false) // Change to Input.GetMouseButton(1) for right mouse button
         {
@@ -161,26 +193,8 @@ public class Player : MonoBehaviour
             }
         }
 
-        //ALL STAMINA BASED THINGS SHOULD BE DONE UNDER HERE ---- SO WE ONLY NEED TO STAMINA CHECK ONCE PER UPDATE
-        //if( staminaWorkingValue>= 0.5f)
-        //{
-        //    if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
-        //    {
-        //        running = true;
-        //        speed = runSpeed;
-        //    }
-        //}
-        //else
-        //{
-        //    running = false;
-        //    speed = defaultSpeed;
-        //}
-        //if (Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.RightControl))
-        //{
-        //    Debug.Log("lifted");
-        //    running = false;
-        //    speed = defaultSpeed;
-        //}
+        // Mouse movement.
+        MouseMovement();
     }
 
     void FixedUpdate()
@@ -198,7 +212,22 @@ public class Player : MonoBehaviour
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput = Input.GetAxisRaw("Vertical");
 
-        movement = new Vector3(horizontalInput, 0.0f, verticalInput).normalized;
+        if (OnSlope() && grounded)
+        {
+            movement = new Vector3(horizontalInput, 0.0f, verticalInput).normalized;
+            rb.AddForce(GetSlopeMoveDirection() * speed * 20f, ForceMode.Force);
+
+            if (rb.velocity.y > 0)
+                rb.AddForce(Vector3.down * 80f, ForceMode.Force);
+        }
+        else if (grounded)
+        {
+            movement = new Vector3(horizontalInput, 0.0f, verticalInput).normalized;
+        }
+        else if (!grounded)
+        {
+            movement = new Vector3(horizontalInput, -fallingSpeed, verticalInput).normalized;
+        }
 
         if(movement.sqrMagnitude != 0) 
         {
@@ -217,7 +246,7 @@ public class Player : MonoBehaviour
         {
             playerAnimation.SetBool("isMoving", false);
         }
-        
+
         rb.velocity = movement * speed;
     }
 
@@ -248,32 +277,22 @@ public class Player : MonoBehaviour
                 // gameObject.GetChild(0).GetComponent<SpriteRenderer>().flipX = false;
                 GetComponentInChildren<SpriteRenderer>().flipX = false;
             }
-            
-
-            //
-            // if(Input.GetMouseButton(0))                                                            
-            // {
-            //     //Debug Sphere to show size
-            //     GameObject point1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            //     point1.transform.position = hit.point;
-
-            //     point1.AddComponent<DebugDestory>();
-            //     Destroy(point1.GetComponent<SphereCollider>());
-            // }
-
-            // int rotation = ((((int)rotationZ / 45) + 1) * 45) - (45 / 2);                            // If we want to d snapped directions
+                
 
         }
     }
-
-
     public void InventorySet()
-    {
+    {  
         inInventory = !inInventory;
+
         inventoryUI.SetActive(inInventory);
         inventorySystem.SetActive(inInventory);
-        //inventoryUI.gameObject.transform.Find("Border").GetComponent<RectTransform>().anchoredPosition = new Vector2(-0, 0);
+
+        if(inChest)
+            chestUI.SetActive(inInventory);     // Open Chest inventory if this bool is on
+        rb.velocity = Vector3.zero;     // Make sure that the player is not moving when in invetory;
     }
+
     //TODO disable character movement when dodging 
     IEnumerator Dodge()
     {
@@ -306,11 +325,7 @@ public class Player : MonoBehaviour
     IEnumerator OnMelee()
     {
         isMeleeing = true;
-        // foreach(RaycastHit hit in Physics.CapsuleCastAll(this.gameObject.transform.GetChild(2).GetChild(0).position, 2f, transform.right, 1f, hitLayerMask))
-        //{
-        //    Debug.Log("Added " + hit.collider.name);
-        //}
-
+        
         //Debug Sphere to show hit location
         GameObject point1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         point1.transform.position = this.gameObject.transform.GetChild(2).GetChild(0).position;
@@ -406,6 +421,22 @@ public class Player : MonoBehaviour
         }
     }
 
+    private bool OnSlope()
+    {
+        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, cc.height * 0.5f + 0.3f))
+        {
+            float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
+            onSlope = true;
+            return angle < maxSlopeAngle && angle != 0;
+        }
 
+        onSlope = false;
+        return false;
+    }
+
+    private Vector3 GetSlopeMoveDirection()
+    {
+        return Vector3.ProjectOnPlane(movement, slopeHit.normal).normalized;
+    }
 
 }

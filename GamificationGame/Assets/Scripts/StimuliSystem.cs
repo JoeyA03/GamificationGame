@@ -44,6 +44,7 @@ public class StimuliSystem : MonoBehaviour
             stimuliTimer += Time.deltaTime;
             if (stimuliTimer >= stimuliLingerLength)
             {
+                stimuliTimer = 0;
                 this.stimuliOnEffect = StimuliEffect.None;
             }
         }

@@ -132,10 +132,22 @@ MonoBehaviour:
   meleeWeightEffective: 1
   meleeStaminaCost: 20
   inInventory: 0
+  inChest: 0
   inventoryUI: {fileID: 3998182058302278113}
+  chestUI: {fileID: 8442444882122523808}
   inventorySystem: {fileID: 0}
+  blockingSpeed: 30
   playerWeight: 1
   playerAnimation: {fileID: 3998182059509750327}
+  playerHeight: 0
+  whatIsFloor:
+    serializedVersion: 2
+    m_Bits: 64
+  fallingSpeed: 5
+  isFalling: 0
+  grounded: 1
+  onSlope: 0
+  maxSlopeAngle: 0
 --- !u!114 &3998182057980478414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -646,6 +658,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &8442444882122523808 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7454455785198720312, guid: cf2c50f91a3d2ba4eb5aee57d07011b5, type: 3}
+  m_PrefabInstance: {fileID: 1322399030295810456}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2971890558249714194
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -765,6 +782,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ps: {fileID: 0}
+  damage: 0
+  invincibilitySpeed: 0
+  objcetsHit: []
 --- !u!4 &5724764329512130256 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7371324294479615170, guid: 55e2003e606c340489b7011c357485d1, type: 3}

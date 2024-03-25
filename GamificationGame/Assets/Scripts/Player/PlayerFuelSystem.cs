@@ -51,16 +51,18 @@ public class PlayerFuelSystem : MonoBehaviour
         }
         else
         {
+            
+
             // Start recharging fuel after the delay
-            timeSinceLastUse += Time.deltaTime;
+            //timeSinceLastUse += Time.deltaTime;
 
-            if (timeSinceLastUse >= fuelRechargeDelay)
-            {
-                currentFuel += fuelRechargeRate * Time.deltaTime;
+            //if (timeSinceLastUse >= fuelRechargeDelay)
+            //{
+            //    currentFuel += fuelRechargeRate * Time.deltaTime;
 
-                // Ensure fuel doesn't exceed the maximum capacity
-                currentFuel = Mathf.Clamp(currentFuel, 0f, maxFuel);
-            }
+            //    // Ensure fuel doesn't exceed the maximum capacity
+            //    currentFuel = Mathf.Clamp(currentFuel, 0f, maxFuel);
+            //}
         }
 
         UpdateFuelUI();
@@ -80,6 +82,12 @@ public class PlayerFuelSystem : MonoBehaviour
         isUsingParticleSystem = true;
         timeSinceLastUse = 0.0f;
     }
+
+    public void Refill() 
+    {
+        currentFuel = maxFuel;
+    }
+
     public void EndParticleSystem()
     {
         isUsingParticleSystem = false;

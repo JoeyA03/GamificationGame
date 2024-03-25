@@ -1,10 +1,9 @@
-using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
-public class ItemGrid : MonoBehaviour
+public class ChestGrid : MonoBehaviour
 {
-    public bool isChest;
-
     public const float tileSizeWidth = 32;
     public const float tileSizeHeight = 32;
 
@@ -21,16 +20,10 @@ public class ItemGrid : MonoBehaviour
 
     public GameObject itemPrefab;
     public List<ItemData> items;
-    public List<InventoryItem> itemsData;
 
 
-    public void Start()
+    public void OpenChest()
     {
-        if (isChest) 
-        {
-            return;
-        }
-
         rectTransform = GetComponent<RectTransform>();
         Init(8, 8);
 
@@ -48,18 +41,6 @@ public class ItemGrid : MonoBehaviour
         //PlaceItem(inventoryItem, 1, 6);
 
     }
-
-    public void chestOpen() 
-    {
-        rectTransform = GetComponent<RectTransform>();
-        Init(8, 8);
-
-        //InventoryItem inventoryItem = Instantiate(itemPrefab).GetComponent<InventoryItem>();
-        CreateRandomItem(5, 2);
-        CreateRandomItem(2, 2);
-        CreateRandomItem(1, 6);
-    }
-
     private void Init(int width, int height)
     {
         inventoryItemSlot = new InventoryItem[width, height];
@@ -70,12 +51,10 @@ public class ItemGrid : MonoBehaviour
     private void CreateRandomItem(int posX, int posY)
     {
         InventoryItem inventoryItem = Instantiate(itemPrefab).GetComponent<InventoryItem>();
-        
+
 
         int selectedItemID = UnityEngine.Random.Range(0, items.Count);
         inventoryItem.Set(items[selectedItemID]);
-
-        itemsData.Add(inventoryItem);
 
         PlaceItem(inventoryItem, posX, posY);
     }
@@ -102,16 +81,18 @@ public class ItemGrid : MonoBehaviour
             }
         }
     }
-        
+
+
+
     internal InventoryItem GetItem(int x, int y)
     {
         return inventoryItemSlot[x, y];
     }
 
-    public Vector2Int GetGridPosition(Vector2 mousePosition) 
+    public Vector2Int GetGridPosition(Vector2 mousePosition)
     {
         positionOnTheGrid.x = mousePosition.x - rectTransform.position.x;
-        positionOnTheGrid.y =  rectTransform.position.y - mousePosition.y;
+        positionOnTheGrid.y = rectTransform.position.y - mousePosition.y;
 
         tileGridPosition.x = (int)(positionOnTheGrid.x / tileSizeWidth);
         tileGridPosition.y = (int)(positionOnTheGrid.y / tileSizeHeight);
@@ -126,9 +107,9 @@ public class ItemGrid : MonoBehaviour
 
         for (int y = 0; y < height; y++)
         {
-            for(int x = 0; x < width; x++) 
+            for (int x = 0; x < width; x++)
             {
-                if(CheckAvailableSpace(x, y, itemToInsert.WIDTH, itemToInsert.HEIGHT) == true) 
+                if (CheckAvailableSpace(x, y, itemToInsert.WIDTH, itemToInsert.HEIGHT) == true)
                 {
                     return new Vector2Int(x, y);
                 }
@@ -206,9 +187,9 @@ public class ItemGrid : MonoBehaviour
                     {
                         overlapItem = inventoryItemSlot[posX + x, posY + y];
                     }
-                    else 
+                    else
                     {
-                        if (overlapItem != inventoryItemSlot[posX + x, posY + y]) 
+                        if (overlapItem != inventoryItemSlot[posX + x, posY + y])
                         {
                             return false;
                         }
@@ -231,7 +212,7 @@ public class ItemGrid : MonoBehaviour
                 if (inventoryItemSlot[posX + x, posY + y] != null)
                 {
                     return false;
-                    
+
 
                 }
             }
@@ -241,14 +222,14 @@ public class ItemGrid : MonoBehaviour
         return true;
     }
 
-    bool PositionCheck(int posX, int posY) 
+    bool PositionCheck(int posX, int posY)
     {
-        if(posX < 0 || posY < 0) 
+        if (posX < 0 || posY < 0)
         {
             return false;
         }
 
-        if(posX >= tileSizeWidth || posY >= tileSizeHeight) 
+        if (posX >= tileSizeWidth || posY >= tileSizeHeight)
         {
             return false;
         }
@@ -256,20 +237,19 @@ public class ItemGrid : MonoBehaviour
         return true;
     }
 
-    public bool BoundaryCheck(int posX, int posY, int width, int height) 
+    public bool BoundaryCheck(int posX, int posY, int width, int height)
     {
-        if(PositionCheck(posX, posY) == false) { return false; }
+        if (PositionCheck(posX, posY) == false) { return false; }
 
         posX += width - 1;
         posY += height - 1;
         //posX += width;
         //posY += height;
 
-        if(PositionCheck(posX, posY) == false) { return false; }
+        if (PositionCheck(posX, posY) == false) { return false; }
 
         return true;
 
 
     }
-
 }

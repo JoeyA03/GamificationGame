@@ -15,9 +15,9 @@ TagManager:
   - Ground
   - Enemy
   - Wall
-  - 
-  - 
-  - 
+  - Player.Atack
+  - Player.Blocking
+  - Fade
   - 
   - 
   - 

@@ -2721,9 +2721,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1014850030}
     - target: {fileID: 3998182057980478415, guid: eb6260727eb33df4e936797e0068005b, type: 3}
+      propertyPath: fallingSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3998182057980478415, guid: eb6260727eb33df4e936797e0068005b, type: 3}
       propertyPath: inventorySystem
       value: 
       objectReference: {fileID: 2124634285}
+    - target: {fileID: 3998182057980478415, guid: eb6260727eb33df4e936797e0068005b, type: 3}
+      propertyPath: whatIsFloor.m_Bits
+      value: 64
+      objectReference: {fileID: 0}
     - target: {fileID: 3998182058302278123, guid: eb6260727eb33df4e936797e0068005b, type: 3}
       propertyPath: inventoryController
       value: 

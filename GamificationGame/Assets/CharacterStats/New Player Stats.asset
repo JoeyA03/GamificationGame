@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6634133bc109a244e8c796b6f483752d, type: 3}
-  m_Name: PlayerTest1
+  m_Name: New Player Stats
   m_EditorClassIdentifier: 
-  baseSpeed: 15
-  blockingSpeed: 5
+  baseSpeed: 0
+  runningSpeed: 0
   dodgeDistance: 0
   weight: 0
   defence: 0
-  stamina: 100
-  maxHealth: 100
-  dodgeSpeed: 30
-  dodgeDuration: 0.5
-  dodgeCooldown: 2
-  dodgeStaminaCost: 15
-  meleeSpeed: 30
-  meleeStaminaCost: 5
+  stamina: 0
+  maxHealth: 0
+  dodgeSpeed: 0
+  dodgeDuration: 0
+  dodgeCooldown: 0
+  dodgeStaminaCost: 0
+  meleeSpeed: 0
+  meleeStaminaCost: 0
